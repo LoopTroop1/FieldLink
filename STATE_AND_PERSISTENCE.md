@@ -1,5 +1,5 @@
 # STATE LIFECYCLE, MUTATION & PERSISTENCE SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Target Context:** Baghewala Surface Facilities Expansion (Jaisalmer Basin, Rajasthan)  
 **Document Type:** Technical State Machine & Data Persistence Specification  
@@ -170,7 +170,7 @@ This ensures unverified extracted data or unapproved claims never distort projec
 
 ## 8. Persistence & Demo Reset Lifecycle
 
-1. **Relational SQLite Persistence:** All project activities, field inputs, progress events, audit logs, and memory items persist in `data/oil_india_baghewala.db` via the Node.js API server (`:3001`).
+1. **Relational SQLite Persistence:** All project activities, field inputs, progress events, audit logs, and memory items persist in `data/fieldlink_project.db` via the Node.js API server (`:3001`).
 2. **Demo Baseline Reset:**
    - Triggered via navigation bar button: `Reset Demo to Baseline`.
    - Invokes `POST /api/demo/reset`.

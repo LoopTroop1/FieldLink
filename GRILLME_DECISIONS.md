@@ -1,5 +1,5 @@
 # GRILL-ME EVALUATION & ARCHITECTURAL DECISIONS
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Role Perspectives:** SIH Evaluation Panel, Primavera P6 Lead Planner, Oil & Gas Construction Manager, Principal AI Architect, Skeptical Product Auditor.
 
 ---
@@ -145,7 +145,7 @@ Every potential point of failure, ambiguity, and operational risk was classified
 
 ### Point 10: Worker Privacy & Contractor Masking
 > **Challenge (Domain Expert):**  
-> *"Oil India facilities work with multiple engineering contractors. Some site disputes involve sensitive contractor names or individual labor claims."*
+> *"Industrial capital facilities work with multiple engineering contractors. Some site disputes involve sensitive contractor names or individual labor claims."*
 
 - **Classification:** **`OPTIONAL`**
 - **Decision & Resolution:**

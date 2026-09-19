@@ -1,11 +1,11 @@
 # SEED DATA SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project:** Baghewala Surface Facilities Expansion (Rajasthan)  
-**Client:** Oil India Limited | **Data Date:** `2026-09-19`  
+**Client:** Enterprise Capital Projects | **Data Date:** `2026-09-19`  
 
 > [!NOTE]
 > **Synthetic Prototype Data Disclaimer:**  
-> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration. The prototype does not use live Oil India project data.
+> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration.
 
 ---
 
@@ -15,7 +15,7 @@
 {
   "id": "proj-baghewala-01",
   "name": "Baghewala Surface Facilities Expansion",
-  "client": "Oil India Limited",
+  "client": "Enterprise Capital Projects",
   "location": "Jaisalmer Basin, Rajasthan, India",
   "status": "Active",
   "startDate": "2026-08-01",

@@ -19,14 +19,14 @@ import {
 } from '../data/delayPatterns';
 
 const KEYS = {
-  PROJECT: 'OIL_INDIA_PROJECT_META',
-  ACTIVITIES: 'OIL_INDIA_SCHEDULE_ACTIVITIES',
-  RECORDS: 'OIL_INDIA_FIELD_RECORDS',
-  EVENTS: 'OIL_INDIA_PROGRESS_EVENTS',
-  AUDIT: 'OIL_INDIA_AUDIT_TRAIL',
-  MEMORY: 'OIL_INDIA_PROJECT_MEMORY',
-  DELAYS: 'OIL_INDIA_DELAY_PATTERNS',
-  SETTINGS: 'OIL_INDIA_APP_SETTINGS'
+  PROJECT: 'FIELDLINK_PROJECT_META',
+  ACTIVITIES: 'FIELDLINK_SCHEDULE_ACTIVITIES',
+  RECORDS: 'FIELDLINK_FIELD_RECORDS',
+  EVENTS: 'FIELDLINK_PROGRESS_EVENTS',
+  AUDIT: 'FIELDLINK_AUDIT_TRAIL',
+  MEMORY: 'FIELDLINK_PROJECT_MEMORY',
+  DELAYS: 'FIELDLINK_DELAY_PATTERNS',
+  SETTINGS: 'FIELDLINK_APP_SETTINGS'
 };
 
 const memoryStore = new Map<string, string>();
@@ -70,7 +70,11 @@ export const DEFAULT_SETTINGS: AppSettings = {
 
 export class StorageService {
   private static loadWithFallback<T>(key: string, initialData: T): T {
-    const raw = storage.getItem(key);
+    let raw = storage.getItem(key);
+    if (!raw) {
+      const legacyKey = key.replace('FIELDLINK_', 'OIL_INDIA_');
+      raw = storage.getItem(legacyKey);
+    }
     if (!raw) {
       this.saveItem(key, initialData);
       return initialData;
@@ -169,7 +173,10 @@ export class StorageService {
    * Clears all persisted storage and restores pristine synthetic seed baseline in <50ms
    */
   public static resetToBaseline(): void {
-    Object.values(KEYS).forEach(k => storage.removeItem(k));
+    Object.values(KEYS).forEach(k => {
+      storage.removeItem(k);
+      storage.removeItem(k.replace('FIELDLINK_', 'OIL_INDIA_'));
+    });
     this.saveProject(INITIAL_PROJECT);
     this.saveActivities(INITIAL_SCHEDULE_ACTIVITIES);
     this.saveFieldRecords(INITIAL_FIELD_RECORDS);

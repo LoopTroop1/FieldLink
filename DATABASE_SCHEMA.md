@@ -1,9 +1,9 @@
 # DATABASE SCHEMA SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Target Context:** Baghewala Surface Facilities Expansion (Jaisalmer Basin, Rajasthan)  
 **Database Engine:** Local SQLite 3 via `node:sqlite` (Node.js 24 Built-in Native Driver)  
-**Database File:** `data/oil_india_baghewala.db`
+**Database File:** `data/fieldlink_project.db`
 
 ---
 

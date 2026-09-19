@@ -1,5 +1,5 @@
 # API CONTRACTS & SERVICE INTERFACES SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Target Context:** Baghewala Surface Facilities Expansion (Jaisalmer Basin, Rajasthan)  
 **Host Architecture:** React UI (`http://localhost:3000`) $\leftrightarrow$ Node.js REST API (`http://localhost:3001`) $\leftrightarrow$ SQLite (`node:sqlite`)  
@@ -20,7 +20,7 @@ Checks backend service health, SQLite database connectivity, and returns dynamic
   "status": "healthy",
   "database": {
     "engine": "node:sqlite",
-    "file": "data/oil_india_baghewala.db",
+    "file": "data/fieldlink_project.db",
     "connected": true,
     "sizeBytes": 49152,
     "sizeFormatted": "48.0 KB (calculated at runtime)",

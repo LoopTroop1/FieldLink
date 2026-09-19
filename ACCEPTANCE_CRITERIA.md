@@ -1,5 +1,5 @@
 # ACCEPTANCE CRITERIA SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Standard Format:** Behavior-Driven Development (BDD) / Gherkin (Given-When-Then)  
 

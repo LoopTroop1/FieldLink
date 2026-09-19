@@ -6,7 +6,7 @@ import {
   Shield, 
   RotateCcw, 
   UserCheck, 
-  Flame, 
+  Layers, 
   PlayCircle,
   Eye,
   EyeOff,
@@ -60,8 +60,8 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           boxShadow: '0 2px 8px rgba(2, 132, 199, 0.35)',
           border: '1px solid rgba(255, 255, 255, 0.15)'
         }}>
-          <Flame size={14} color="#FBBF24" />
-          <span>OIL INDIA LIMITED</span>
+          <Layers size={14} color="#38BDF8" />
+          <span>FIELDLINK</span>
         </div>
 
         <div>

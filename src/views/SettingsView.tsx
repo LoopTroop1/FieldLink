@@ -125,7 +125,7 @@ export const SettingsView: React.FC = () => {
           <div style={{ background: 'var(--bg-base)', padding: '10px 12px', borderRadius: '6px', border: '1px solid var(--border-subtle)' }}>
             <div style={{ color: 'var(--text-muted)', fontSize: '11px', marginBottom: '3px' }}>Database File Path</div>
             <div style={{ fontWeight: 700, color: 'var(--teal-accent)', fontFamily: 'monospace' }}>
-              {dbStats?.databasePath || 'data/oil_india_baghewala.db'}
+              {dbStats?.databasePath || 'data/fieldlink_project.db'}
             </div>
           </div>
           <div style={{ background: 'var(--bg-base)', padding: '10px 12px', borderRadius: '6px', border: '1px solid var(--border-subtle)' }}>

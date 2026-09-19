@@ -253,7 +253,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`\n[OIL INDIA LOCAL DATABASE SERVER]`);
+  console.log(`\n[FIELDLINK LOCAL DATABASE SERVER]`);
   console.log(`✓ Engine: Node 24 Native SQLite (node:sqlite)`);
   console.log(`✓ Database: ${localDb.getDatabaseStats().databasePath}`);
   console.log(`✓ REST API: http://localhost:${PORT}/api`);

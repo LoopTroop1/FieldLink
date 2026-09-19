@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { UserRole, DEMO_USERS, AuthUser } from '../types';
 import { 
-  Flame, 
+  Layers, 
   ShieldCheck, 
   Lock, 
   UserCheck, 
@@ -45,7 +45,7 @@ export const LoginView: React.FC = () => {
     setIsAuthenticating(true);
     setTimeout(() => {
       const custom: Partial<AuthUser> = {
-        email: emailOrId.includes('@') ? emailOrId : `${emailOrId.toLowerCase()}@oilindia.in`,
+        email: emailOrId.includes('@') ? emailOrId : `${emailOrId.toLowerCase()}@fieldlink.io`,
         employeeId: emailOrId.toUpperCase()
       };
       login(selectedRole, custom);
@@ -148,16 +148,16 @@ export const LoginView: React.FC = () => {
             boxShadow: '0 4px 14px rgba(2, 132, 199, 0.4)',
             border: '1px solid rgba(255, 255, 255, 0.2)'
           }}>
-            <Flame size={16} color="#FBBF24" />
-            <span>OIL INDIA LIMITED</span>
+            <Layers size={16} color="#38BDF8" />
+            <span>FIELDLINK PLATFORM</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
-              A Maharatna Government of India Enterprise
+              Enterprise Capital Projects & Infrastructure Controls
             </span>
             <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-              Baghewala Surface Facilities Expansion, Jaisalmer Basin, Rajasthan
+              Intelligent Field Progress & Schedule Linking System
             </span>
           </div>
         </div>
@@ -372,7 +372,7 @@ export const LoginView: React.FC = () => {
                     Enterprise Gateway Sign In
                   </h3>
                   <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>
-                    Oil India Active Directory SSO
+                    Enterprise Active Directory SSO
                   </span>
                 </div>
               </div>
@@ -407,7 +407,7 @@ export const LoginView: React.FC = () => {
                       className="input-field"
                       value={emailOrId}
                       onChange={(e) => setEmailOrId(e.target.value)}
-                      placeholder="e.g. rajiv.sen@oilindia.in or OIL-PL-0482"
+                      placeholder="e.g. rajiv.sen@fieldlink.io or FL-PL-0482"
                       required
                       style={{ paddingLeft: '36px' }}
                     />
@@ -483,7 +483,7 @@ export const LoginView: React.FC = () => {
                   }}
                   disabled={isAuthenticating}
                 >
-                  <span>{isAuthenticating ? 'Validating PSU Credentials...' : 'Authenticate & Enter Gateway'}</span>
+                  <span>{isAuthenticating ? 'Validating Credentials...' : 'Authenticate & Enter Gateway'}</span>
                 </button>
               </form>
             </div>
@@ -499,9 +499,9 @@ export const LoginView: React.FC = () => {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                 <ShieldCheck size={14} color="#10B981" />
-                <span style={{ fontWeight: 600 }}>PSU Air-Gapped Security Directive</span>
+                <span style={{ fontWeight: 600 }}>Enterprise Security Directive</span>
               </div>
-              Access restricted to authorized project personnel of Oil India Limited. All operations are logged to the append-only audit trail.
+              Access restricted to authorized project personnel and contractors. All operations are logged to the append-only audit trail.
             </div>
           </div>
         </div>
@@ -519,7 +519,7 @@ export const LoginView: React.FC = () => {
         color: 'var(--text-muted)',
         zIndex: 10
       }}>
-        <span>&copy; 2026 Oil India Limited. Baghewala Surface Facilities Expansion Project.</span>
+        <span>&copy; 2026 FieldLink Platform. Capital Projects & Schedule Linking System.</span>
         <span>Real-Time Actual Progress Tracking | Intelligent Planning-to-Execution Bridge</span>
       </footer>
     </div>

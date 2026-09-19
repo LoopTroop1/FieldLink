@@ -1,5 +1,5 @@
 # MATCHING & DUPLICATE ENGINE DESIGN SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Target Context:** Baghewala Surface Facilities Expansion (Jaisalmer Basin, Rajasthan)  
 **Document Type:** Technical Algorithm & Logic Specification  

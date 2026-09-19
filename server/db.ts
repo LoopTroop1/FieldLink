@@ -28,7 +28,7 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-export const DB_PATH = path.join(DATA_DIR, 'oil_india_baghewala.db');
+export const DB_PATH = path.join(DATA_DIR, 'fieldlink_project.db');
 
 export class LocalDatabase {
   private db: DatabaseSync;

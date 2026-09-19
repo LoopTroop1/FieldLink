@@ -1,11 +1,11 @@
 # SYNTHETIC FIELD INPUTS & TEST CASES
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Target Project:** Baghewala Surface Facilities Expansion  
 **Status Date (Cutoff):** `2026-09-19`  
 
 > [!NOTE]
 > **Synthetic Prototype Data Disclaimer:**  
-> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration. The prototype does not use live Oil India project data.
+> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration.
 
 ---
 

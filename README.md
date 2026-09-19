@@ -6,10 +6,10 @@
 [![Vite](https://img.shields.io/badge/Vite-6.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![SQLite](https://img.shields.io/badge/Database-Node%2024%20Native%20SQLite-003B57?logo=sqlite&logoColor=white)](https://nodejs.org/api/sqlite.html)
 [![Tests](https://img.shields.io/badge/Tests-63%2F63%20Passing-10B981)](#-automated-verification)
-[![Design](https://img.shields.io/badge/Design%20System-OIEDS%20Industrial-0EA5E9)](#-design-system)
+[![Design](https://img.shields.io/badge/Design%20System-FieldLink%20Industrial-0EA5E9)](#-design-system)
 
 > **Deployment Anchor:** Baghewala Surface Facilities Expansion, Thar Desert, Rajasthan  
-> **Target Enterprise:** Oil India Limited (Maharatna PSU, Ministry of Petroleum & Natural Gas, Govt. of India)  
+> **Target Enterprise:** Enterprise Capital Projects (Heavy Infrastructure, Energy, EPC & Utilities)  
 > **Problem Domain:** Real-time actual progress tracking, automated multi-signal schedule linking, out-of-sequence predecessor gating, and Oracle Primavera P6 integration.
 
 ---
@@ -150,4 +150,4 @@ The platform includes a dedicated **One-Click Persona Login Gateway** (`/login`)
 
 ## 📄 License
 
-Proprietary prototype developed for **Oil India Limited** under SIH PS-26122. All rights reserved.
+Proprietary enterprise capital project controls platform. Built with FieldLink Architecture. All rights reserved.

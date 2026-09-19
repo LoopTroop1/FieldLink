@@ -97,41 +97,41 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'Planner': {
     id: 'user-planner',
     name: 'Rajiv Sen',
-    email: 'rajiv.sen@oilindia.in',
+    email: 'rajiv.sen@fieldlink.io',
     role: 'Planner',
     department: 'Planning & Project Controls',
-    employeeId: 'OIL-PL-0482',
-    badgeNumber: 'BAGH-EXP-A01',
+    employeeId: 'FL-PL-0482',
+    badgeNumber: 'FL-EXP-A01',
     avatarColor: '#0EA5E9'
   },
   'Supervisor': {
     id: 'user-supervisor',
     name: 'Ramesh Sharma',
-    email: 'ramesh.sharma@oilindia.in',
+    email: 'ramesh.sharma@fieldlink.io',
     role: 'Supervisor',
     department: 'Piping & Field Execution',
-    employeeId: 'OIL-SUP-1109',
-    badgeNumber: 'BAGH-EXP-B12',
+    employeeId: 'FL-SUP-1109',
+    badgeNumber: 'FL-EXP-B12',
     avatarColor: '#10B981'
   },
   'Discipline Engineer': {
     id: 'user-engineer',
     name: 'Vikram Patel',
-    email: 'vikram.patel@oilindia.in',
+    email: 'vikram.patel@fieldlink.io',
     role: 'Discipline Engineer',
     department: 'Mechanical & Piping Engineering',
-    employeeId: 'OIL-ENG-3391',
-    badgeNumber: 'BAGH-EXP-C04',
+    employeeId: 'FL-ENG-3391',
+    badgeNumber: 'FL-EXP-C04',
     avatarColor: '#F59E0B'
   },
   'Project Manager': {
     id: 'user-pm',
     name: 'S. Banerjee',
-    email: 's.banerjee@oilindia.in',
+    email: 's.banerjee@fieldlink.io',
     role: 'Project Manager',
-    department: 'Directorate of Surface Projects',
-    employeeId: 'OIL-DIR-0077',
-    badgeNumber: 'BAGH-EXP-HQ01',
+    department: 'Directorate of Capital Projects',
+    employeeId: 'FL-DIR-0077',
+    badgeNumber: 'FL-EXP-HQ01',
     avatarColor: '#8B5CF6'
   }
 };

@@ -1,6 +1,6 @@
 /**
  * Automated Backend API Integration Test Suite
- * Problem Statement 26122 | Oil India Limited | Baghewala Surface Facilities Expansion
+ * FieldLink Platform | Intelligent Progress & Schedule Linking
  * Validates all REST contracts, SQLite persistence, and security controls
  */
 
@@ -21,7 +21,7 @@ function assert(condition, testName, details = '') {
 
 async function runBackendTests() {
   console.log('\n========================================================================');
-  console.log('OIL INDIA LIMITED — BACKEND API & SQLITE PERSISTENCE VERIFICATION');
+  console.log('FIELDLINK PLATFORM — BACKEND API & SQLITE PERSISTENCE VERIFICATION');
   console.log('Endpoint: ' + BASE_URL);
   console.log('========================================================================\n');
 

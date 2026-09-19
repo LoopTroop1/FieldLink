@@ -1,19 +1,19 @@
 # PRODUCT GOAL & VISION SPECIFICATION
 ## SIH 2026 — Problem Statement 26122
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking (Planning-to-Execution Bridge)  
-**Organization:** Oil India Limited  
+**Target Enterprise:** Enterprise Capital Projects & Infrastructure  
 **Category:** Software | **Theme:** Smart Automation  
 **Target Installation/Context:** Baghewala Surface Facilities Expansion  
 
 > [!NOTE]
 > **Synthetic Prototype Data Disclaimer:**  
-> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration. The prototype does not use live Oil India project data or confidential infrastructure assets.
+> All project names, activities, dates, progress records, personnel references, and schedule data are synthetic and created solely for demonstration.
 
 ---
 
 ## 1. Executive Summary & Problem Context
 
-In mega-infrastructure and oil & gas developments—such as Oil India Limited’s surface facility installations, gathering stations, and pipeline expansion networks—the baseline project schedule is maintained in enterprise tools (such as Oracle Primavera P6 or Microsoft Project) down to Level 5 (Work Packages) and Level 6 (Executable Field Activities).
+In mega-infrastructure, energy, and capital EPC developments—such as complex industrial surface facility installations, gathering stations, and pipeline networks—the baseline project schedule is maintained in enterprise tools (such as Oracle Primavera P6 or Microsoft Project) down to Level 5 (Work Packages) and Level 6 (Executable Field Activities).
 
 However, **field reality diverges sharply from the planning office**:
 - **Fragmented Data Sources:** Progress happens on the ground and is documented across unstructured daily progress reports (DPRs), discipline-specific Excel logs, paper site diaries, WhatsApp transcripts, and verbal radio/voice updates.
@@ -269,7 +269,7 @@ To ensure an airtight, stable, and deterministic demonstration that never fails 
 ## 9. The Judge Demo Story Arc: "A Day in the Life at Baghewala"
 
 - **Act 1: The Chaos of Field Data (0:00 - 0:45)**
-  - Present the reality of Oil India’s Baghewala Surface Facilities Expansion.
+  - Present the reality of complex capital project execution (Baghewala Surface Facilities Expansion).
   - Ingest an actual daily progress note: *"Piping crew erected spool for Line 24-XX in north pipe rack. Work started 12 Sep and 18 of 24 joints completed."*
   - Show the ingestion pipeline parsing and normalizing the heterogeneous text in real time.
 
@@ -291,4 +291,4 @@ To ensure an airtight, stable, and deterministic demonstration that never fails 
 - **Act 5: Organizational Memory & Indicative Forecasting (3:30 - 4:15)**
   - Open Analytics: show near-real-time S-curves, indicative forecast completion dates, and the Data Quality Score.
   - Open Project Memory: show the automatically synthesized insight: *"Piping crew productivity in North Rack averaged 6 joints/day; Hydrotest delayed due to unavailable test pump."*
-  - Conclude: *"This is how Oil India can bridge the gap between project plans and field execution."*
+  - Conclude: *"This is how FieldLink bridges the gap between project plans and field execution."*

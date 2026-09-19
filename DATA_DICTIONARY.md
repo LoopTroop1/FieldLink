@@ -1,5 +1,5 @@
 # DATA DICTIONARY & SCHEMA SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking  
 **Target Context:** Baghewala Surface Facilities Expansion (Rajasthan)  
 
@@ -115,7 +115,7 @@ Represents the overarching infrastructure asset and scheduling context.
 |---|---|---|---|---|
 | `id` | `string` | No | UUID / Slug | Unique project identifier (e.g., `'proj-baghewala-01'`) |
 | `name` | `string` | No | String | Official project name: `'Baghewala Surface Facilities Expansion'` |
-| `client` | `string` | No | String | Owner organization: `'Oil India Limited'` |
+| `client` | `string` | No | String | Owner organization: `'Enterprise Capital Projects'` |
 | `location` | `string` | No | String | Physical site: `'Jaisalmer Basin, Rajasthan, India'` |
 | `status` | `string` | No | Enum: `'Active' \| 'Commissioning'` | Current project execution state |
 | `startDate` | `string` | No | ISO 8601: `YYYY-MM-DD` | Project inception date: `'2026-08-01'` |

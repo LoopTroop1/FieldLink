@@ -1,5 +1,5 @@
 # SYNONYM DICTIONARY & NORMALIZATION RULES
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project:** Baghewala Surface Facilities Expansion  
 
 ---

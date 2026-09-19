@@ -91,7 +91,7 @@ export const OperationsOverviewView: React.FC = () => {
           </div>
           <div style={{ fontSize: '12.5px', color: 'var(--text-primary)' }}>
             <strong>Enterprise Relational Repository:</strong>{' '}
-            <code style={{ color: 'var(--teal-accent)', fontSize: '12px' }}>data/oil_india_baghewala.db</code>
+            <code style={{ color: 'var(--teal-accent)', fontSize: '12px' }}>data/fieldlink_project.db</code>
             <span style={{ color: 'var(--text-secondary)', marginLeft: '12px' }}>
               {dbStats?.databaseSizeKb ? `${dbStats.databaseSizeKb} KB` : 'Active'} | Air-Gapped High-Performance Persistence
             </span>

@@ -1,7 +1,7 @@
-# OIL INDIA ENTERPRISE DESIGN SYSTEM (OIEDS)
+# FIELDLINK ENTERPRISE DESIGN SYSTEM (FLEDS)
 ## Intelligent Data Capture & Schedule-Linking Layer
 **Anchor Installation:** Baghewala Surface Facilities Expansion, Thar Desert, Rajasthan  
-**Operating Entity:** Oil India Limited (Maharatna PSU, Ministry of Petroleum & Natural Gas, Govt. of India)  
+**Operating Entity:** Enterprise Capital Projects & Infrastructure  
 **Design Lead Specification:** Version 2.0.0 (Enterprise Industrial UI/UX)  
 **Accessibility Target:** WCAG 2.1 Level AA Compliant (AAA for Tabular Figures & High-Contrast Badges)
 
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary & Design Philosophy
 
-The Oil India Enterprise Design System (OIEDS) is purpose-built for heavy energy infrastructure, pipeline engineering, and capital project control environments. Unlike generic SaaS templates or consumer software, OIEDS balances **rugged site-supervisor ergonomics** with **high-density algorithmic explainability** for planning engineers.
+The FieldLink Enterprise Design System (FLEDS) is purpose-built for heavy energy infrastructure, pipeline engineering, and capital project control environments. Unlike generic SaaS templates or consumer software, FLEDS balances **rugged site-supervisor ergonomics** with **high-density algorithmic explainability** for planning engineers.
 
 ### Core Design Principles
 
@@ -65,7 +65,7 @@ The Oil India Enterprise Design System (OIEDS) is purpose-built for heavy energy
   --text-muted: #64748B;               /* Timestamps, disabled text, hints */
 
   /* Brand & Intelligence Accents */
-  --oil-green: #10B981;                /* Oil India corporate emerald */
+  --oil-green: #10B981;                /* FieldLink precision emerald */
   --oil-green-glow: rgba(16, 185, 129, 0.20);
   --teal-accent: #0EA5E9;              /* Algorithm, AI extraction, active link */
   --teal-accent-glow: rgba(14, 165, 233, 0.20);

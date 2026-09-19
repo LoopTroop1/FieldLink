@@ -3,7 +3,7 @@ import { Project, ScheduleActivity } from '../types';
 export const INITIAL_PROJECT: Project = {
   id: 'proj-baghewala-01',
   name: 'Baghewala Surface Facilities Expansion',
-  client: 'Oil India Limited',
+  client: 'Enterprise Capital Projects',
   location: 'Jaisalmer Basin, Rajasthan, India',
   status: 'Active',
   startDate: '2026-08-01',

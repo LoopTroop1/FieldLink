@@ -111,7 +111,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Authentication & Session
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const saved = localStorage.getItem('OIL_INDIA_AUTH_STATE');
+    const saved = localStorage.getItem('FIELDLINK_AUTH_STATE') ?? localStorage.getItem('OIL_INDIA_AUTH_STATE');
     return saved !== null ? saved === 'true' : true;
   });
 
@@ -122,13 +122,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('OIL_INDIA_THEME');
+    const saved = localStorage.getItem('FIELDLINK_THEME') ?? localStorage.getItem('OIL_INDIA_THEME');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('OIL_INDIA_THEME', theme);
+    localStorage.setItem('FIELDLINK_THEME', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -515,7 +515,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setCurrentUser(userToSet);
     setIsAuthenticated(true);
-    localStorage.setItem('OIL_INDIA_AUTH_STATE', 'true');
+    localStorage.setItem('FIELDLINK_AUTH_STATE', 'true');
     setSettings(prev => ({ ...prev, currentRole: role }));
 
     // Role-tailored initial views via declarative map
@@ -524,7 +524,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.setItem('OIL_INDIA_AUTH_STATE', 'false');
+    localStorage.setItem('FIELDLINK_AUTH_STATE', 'false');
   };
 
   const togglePrivacyMode = () => {

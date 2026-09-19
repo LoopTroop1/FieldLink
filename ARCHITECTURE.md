@@ -1,5 +1,5 @@
 # SYSTEM ARCHITECTURE SPECIFICATION
-## SIH 2026 — Problem Statement 26122 (Oil India Limited)
+## SIH 2026 — Problem Statement 26122 (FieldLink Platform)
 **Project Title:** Intelligent Data Capture & Schedule-Linking Layer for Infrastructure Project Management: Real-Time Actual Progress Tracking (Planning-to-Execution Bridge)  
 **Target Context:** Baghewala Surface Facilities Expansion (Jaisalmer Basin, Rajasthan)  
 **Document Type:** Final Technical Architecture Specification  
@@ -45,14 +45,14 @@ The prototype operates on a local client-server architecture with an explicit HT
 ┌──────────────▼─────────────┐
 │   node:sqlite Repository   │
 │   DatabaseSync (Node 24)   │
-│ data/oil_india_baghewala.db│
+│  data/fieldlink_project.db │
 └────────────────────────────┘
 ```
 
 ### Runtime Processes:
 1. **Frontend Client:** React 18 + TypeScript SPA served via Vite on `http://localhost:3000`.
 2. **Backend API Service:** Native Node.js HTTP REST service running on `http://localhost:3001`.
-3. **Database Engine:** Embedded SQLite 3 accessed natively via `node:sqlite` (`DatabaseSync`), writing to `data/oil_india_baghewala.db`.
+3. **Database Engine:** Embedded SQLite 3 accessed natively via `node:sqlite` (`DatabaseSync`), writing to `data/fieldlink_project.db`.
 4. **Client-Server Boundary:** The browser client executes no direct disk or database operations; all persistent state queries and mutations route via HTTP to the Node.js API server.
 
 ---
@@ -69,7 +69,7 @@ The prototype operates on a local client-server architecture with an explicit HT
 ### 3.2 Backend API Responsibilities (`:3001`)
 - **HTTP Routing & Protocol Translation:** Handling JSON payloads, HTTP status codes, CORS headers, and error serialization.
 - **Domain Service Orchestration:** Invoking normalization, duplicate checking, extraction, multi-signal matching, and safety validation in strict sequential order.
-- **Relational Persistence:** Executing SQL queries and transactions against SQLite (`data/oil_india_baghewala.db`).
+- **Relational Persistence:** Executing SQL queries and transactions against SQLite (`data/fieldlink_project.db`).
 - **Append-Only Audit Enforcement:** Writing audit records on every mutation with actor name, role, timestamp, diff snapshots, and source quotes. Preventing UI-triggered `UPDATE` or `DELETE` operations on audit tables.
 - **Mock PMIS Dispatch:** Providing local endpoint `/api/mock-pmis/sync` and returning realistic demonstration responses.
 - **System Health & Runtime Metrics:** Serving `/api/health` with dynamic SQLite database file size and active record counts.
@@ -124,7 +124,7 @@ graph TD
 ## 5. Local Mock PMIS Adapter Boundaries
 
 To maintain strict technical honesty and eliminate false integration claims:
-1. **No Live Corporate Connections:** The prototype does **not** connect to live Oracle Primavera P6 Cloud or internal Oil India PMIS production endpoints.
+1. **No Live Corporate Connections:** The prototype does **not** connect to live Oracle Primavera P6 Cloud or internal PMIS production endpoints.
 2. **Local Mock Route:** All synchronization actions dispatch to:
    ```
    POST /api/mock-pmis/sync
