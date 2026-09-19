@@ -18,7 +18,7 @@ export const DataIngestionView: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Quick Preset Samples
-  const loadPreset = (type: 'piping' | 'csv' | 'diary' | 'voice') => {
+  const loadPreset = (type: 'piping' | 'csv' | 'diary' | 'voice' | 'p6' | 'civil' | 'hse') => {
     if (type === 'piping') {
       setSourceType('report');
       setSourceName('Daily_Progress_Report_Piping_12Sep.pdf');
@@ -51,6 +51,31 @@ export const DataIngestionView: React.FC = () => {
       setDiscipline('ROTATING_EQUIP');
       setDateHint('15 Sep 2026');
       setRawText(`Pump P-204 alignment completed today; final shimming is pending.`);
+    } else if (type === 'p6') {
+      setSourceType('report');
+      setSourceName('Primavera_P6_Export_Instruments_15Sep.xml');
+      setSubmittedBy('P6 Scheduling Interface (Export)');
+      setDiscipline('INSTRUMENTATION');
+      setDateHint('15 Sep 2026');
+      setRawText(
+        `<ActivityExport Project="BAGHEWALA-01" ExportDate="2026-09-15">\n  <Activity ActivityID="INS-L5-051" WBS="BAGH.SURF.INST.JB" Discipline="INSTRUMENTATION">\n    <TaskName>Junction Box Installation</TaskName>\n    <Status>In Progress</Status>\n    <ActualStart>2026-09-11</ActualStart>\n    <PhysicalPercentComplete>25%</PhysicalPercentComplete>\n    <FieldQuantityActual>4</FieldQuantityActual>\n    <FieldQuantityTarget>16</FieldQuantityTarget>\n    <Location>Process Area - Local Racks</Location>\n  </Activity>\n</ActivityExport>`
+      );
+    } else if (type === 'civil') {
+      setSourceType('spreadsheet');
+      setSourceName('Civil_Foundations_PourLog_12Sep.csv');
+      setSubmittedBy('A. Kulkarni (Civil Lead)');
+      setDiscipline('CIVIL');
+      setDateHint('12-09-2026');
+      setRawText(`Activity Description,Structure / Bay,Discipline,Execution Date,Quantity,Unit,Progress %,Location\nEquipment Foundation,Compressor Bay A,Civil,12-09-2026,160,m³,50%,Compressor Area - Bay A\nCable Trench,Substation corridor,Civil,12-09-2026,225,meters,50%,Substation to Process Area`);
+    } else if (type === 'hse') {
+      setSourceType('report');
+      setSourceName('HSE_Daily_Permit_Inspection_14Sep.pdf');
+      setSubmittedBy('S. Das (HSE Manager)');
+      setDiscipline('HSE');
+      setDateHint('14 Sep 2026');
+      setRawText(
+        `HSE Daily Safety Inspection & Permit Verification Report\nDate: 14-Sep-2026 | Location: Plant Wide Facilities\nInspections: 32 of 40 active work scaffolds verified and tagged GREEN.\nPermits: 98 permits closed and safe isolation restored in Separator Area.\nZero reportable lost-time injuries (LTI) or environmental spills.`
+      );
     }
     setProcessingState('ready');
     setSuccessMessage(null);
@@ -111,15 +136,27 @@ export const DataIngestionView: React.FC = () => {
           </button>
           <button onClick={() => loadPreset('csv')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
             <Table size={13} color="#10B981" />
-            <span>CSV Spreadsheet (Tabular)</span>
+            <span>CSV Spreadsheet (Piping)</span>
+          </button>
+          <button onClick={() => loadPreset('civil')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
+            <Table size={13} color="#38BDF8" />
+            <span>Civil Pour Log (CSV)</span>
           </button>
           <button onClick={() => loadPreset('diary')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
             <Image size={13} color="#F59E0B" />
-            <span>Scanned Diary (OCR)</span>
+            <span>Scanned Diary (Electrical OCR)</span>
+          </button>
+          <button onClick={() => loadPreset('p6')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
+            <FileText size={13} color="#EC4899" />
+            <span>Primavera P6 Export (XML)</span>
+          </button>
+          <button onClick={() => loadPreset('hse')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
+            <FileText size={13} color="#F87171" />
+            <span>HSE Safety Inspection</span>
           </button>
           <button onClick={() => loadPreset('voice')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
             <Mic size={13} color="#A78BFA" />
-            <span>Time Agent Audio Note</span>
+            <span>Time Agent Audio (Pump P-204)</span>
           </button>
         </div>
       </div>

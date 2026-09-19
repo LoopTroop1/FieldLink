@@ -11,7 +11,8 @@ import {
   AlertTriangle, 
   ChevronDown, 
   ChevronUp, 
-  Sparkles
+  Sparkles,
+  PlusCircle
 } from 'lucide-react';
 
 export const ScheduleLinkerView: React.FC = () => {
@@ -22,6 +23,7 @@ export const ScheduleLinkerView: React.FC = () => {
     setSelectedEventId,
     approveCandidateMatch,
     apply1ToNSplit,
+    proposeNewActivity,
     setActiveView,
     getCandidatesForEvent
   } = useApp();
@@ -32,6 +34,10 @@ export const ScheduleLinkerView: React.FC = () => {
   const [expandedCardId, setExpandedCardId] = useState<string | null>(candidates[0]?.id || null);
   const [outOfSequenceTarget, setOutOfSequenceTarget] = useState<ScheduleActivity | null>(null);
   const [showGranularityModal, setShowGranularityModal] = useState(false);
+  const [showProposeModal, setShowProposeModal] = useState(false);
+  const [newActivityDesc, setNewActivityDesc] = useState('');
+  const [newActivityDiscipline, setNewActivityDiscipline] = useState('PIPING');
+  const [newActivityLocation, setNewActivityLocation] = useState('Process Area');
   const [approvalFeedback, setApprovalFeedback] = useState<string | null>(null);
 
   if (!currentEvent) {
@@ -334,7 +340,136 @@ export const ScheduleLinkerView: React.FC = () => {
             </div>
           );
         })}
+
+        {/* Unmatched / New Scope Action Box */}
+        <div style={{
+          background: 'var(--bg-surface)',
+          border: '1px dashed var(--border-subtle)',
+          borderRadius: '8px',
+          padding: '14px 18px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '12px',
+          marginTop: '6px'
+        }}>
+          <div>
+            <div style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <PlusCircle size={15} color="var(--teal-accent)" />
+              <span>Unmatched or Field Activity Not Present in Planned WBS?</span>
+            </div>
+            <p style={{ fontSize: '11.5px', color: 'var(--text-secondary)', marginTop: '3px' }}>
+              Field execution is frequently more granular or represents ad-hoc work. Flag as a new scope activity for planner governance rather than silently dropping it.
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setNewActivityDesc(currentEvent.activityDescription);
+              setNewActivityDiscipline(currentEvent.discipline);
+              setNewActivityLocation(currentEvent.location || 'Process Area');
+              setShowProposeModal(true);
+            }}
+            className="btn btn-secondary"
+            style={{ padding: '7px 14px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <PlusCircle size={14} />
+            <span>Propose New Activity Node</span>
+          </button>
+        </div>
       </div>
+
+      {/* Propose New Activity Modal */}
+      {showProposeModal && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.7)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 100,
+          padding: '20px'
+        }}>
+          <div className="oil-card" style={{ maxWidth: '480px', width: '100%', background: 'var(--bg-surface)' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 800, marginBottom: '6px' }}>
+              Propose New Activity in Schedule WBS
+            </h3>
+            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+              Create an official proposed activity entry linked to this field progress event for planner review.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                  Activity Description
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={newActivityDesc}
+                  onChange={(e) => setNewActivityDesc(e.target.value)}
+                  style={{ width: '100%', fontSize: '13px' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    Discipline
+                  </label>
+                  <select
+                    className="input-field"
+                    value={newActivityDiscipline}
+                    onChange={(e) => setNewActivityDiscipline(e.target.value)}
+                    style={{ width: '100%' }}
+                  >
+                    {['CIVIL', 'PIPING', 'STATIC_EQUIP', 'ROTATING_EQUIP', 'ELECTRICAL', 'INSTRUMENTATION', 'HSE'].map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    Location / Zone
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={newActivityLocation}
+                    onChange={(e) => setNewActivityLocation(e.target.value)}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '12px' }}>
+                <button
+                  onClick={() => setShowProposeModal(false)}
+                  className="btn btn-secondary"
+                  style={{ padding: '6px 14px' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    proposeNewActivity(currentEvent, newActivityDesc, newActivityDiscipline, newActivityLocation);
+                    setShowProposeModal(false);
+                    setApprovalFeedback(`Created proposed new activity: "${newActivityDesc}". Queued in live schedule.`);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '6px 14px' }}
+                  disabled={!newActivityDesc.trim()}
+                >
+                  Confirm & Propose
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Out of Sequence Modal */}
       {outOfSequenceTarget && (

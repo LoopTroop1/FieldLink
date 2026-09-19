@@ -64,23 +64,42 @@ export const TimeAgentView: React.FC = () => {
     }
   ]);
 
-  // Selectable Transcripts
+  // Selectable Transcripts across all 6 disciplines
   const audioPresets = [
     {
-      label: 'Piping Line 24-XX Spool',
+      label: 'Piping (Line 24-XX Spool)',
+      discipline: 'Piping',
       transcript: 'Piping crew started erecting Line 24-XX spool at the north rack today. 18 of 24 joints are complete.'
     },
     {
-      label: 'Pump P-204 Alignment',
+      label: 'Rotating Equip (Pump P-204)',
+      discipline: 'Rotating Equip',
       transcript: 'Pump P-204 alignment completed today; final shimming is pending.'
     },
     {
-      label: 'Hydrotest Pump Delay',
-      transcript: 'Hydrotest on Line 24-XX held because the high-pressure test pump was unavailable.'
+      label: 'Electrical (Substation Tray)',
+      discipline: 'Electrical',
+      transcript: 'Cable tray installation completed in substation corridor. Approx. 42 metres installed on 14 Sep 2026.'
     },
     {
-      label: 'Substation Cable Tray',
-      transcript: 'Cable tray installation completed in substation corridor. Approx. 42 metres installed on 14 Sep 2026.'
+      label: 'Civil (Foundation Excavation)',
+      discipline: 'Civil',
+      transcript: 'Foundation excavation for equipment foundation reached 160 m³ today in Compressor Bay A.'
+    },
+    {
+      label: 'Instrumentation (Junction Box)',
+      discipline: 'Instrumentation',
+      transcript: 'Junction box installation completed for 4 units on local racks in process area.'
+    },
+    {
+      label: 'HSE (Scaffold Inspection)',
+      discipline: 'HSE',
+      transcript: 'Scaffold safety inspection completed for 8 work zones across plant area; permit signed off.'
+    },
+    {
+      label: 'Piping Delay (Hydrotest Pump)',
+      discipline: 'Piping',
+      transcript: 'Hydrotest on Line 24-XX held because the high-pressure test pump was unavailable.'
     }
   ];
 
@@ -103,7 +122,8 @@ export const TimeAgentView: React.FC = () => {
 
     // Agent response simulation
     let entityCard;
-    if (text.toLowerCase().includes('pump p-204')) {
+    const lower = text.toLowerCase();
+    if (lower.includes('pump p-204') || lower.includes('shimming')) {
       entityCard = {
         discipline: 'Rotating Equipment',
         targetActivityCode: 'ROT-L6-037',
@@ -113,7 +133,7 @@ export const TimeAgentView: React.FC = () => {
         location: 'Pump Shelter - Bay 2',
         confidence: 91.0
       };
-    } else if (text.toLowerCase().includes('cable tray')) {
+    } else if (lower.includes('cable tray') || lower.includes('substation')) {
       entityCard = {
         discipline: 'Electrical',
         targetActivityCode: 'ELE-L5-041',
@@ -123,7 +143,37 @@ export const TimeAgentView: React.FC = () => {
         location: 'Substation to Process Area',
         confidence: 88.0
       };
-    } else if (text.toLowerCase().includes('hydrotest')) {
+    } else if (lower.includes('foundation') || lower.includes('excavation') || lower.includes('bay a')) {
+      entityCard = {
+        discipline: 'Civil',
+        targetActivityCode: 'CIV-L5-012',
+        targetActivityName: 'Equipment Foundation',
+        progress: '160 m³ of 320 m³ (50%)',
+        actualStart: '25 Aug 2026',
+        location: 'Compressor Area - Bay A',
+        confidence: 92.5
+      };
+    } else if (lower.includes('junction box') || lower.includes('racks') || lower.includes('instrument')) {
+      entityCard = {
+        discipline: 'Instrumentation',
+        targetActivityCode: 'INS-L5-051',
+        targetActivityName: 'Junction Box Installation',
+        progress: '4 of 16 units (25%)',
+        actualStart: '11 Sep 2026',
+        location: 'Process Area - Local Racks',
+        confidence: 93.0
+      };
+    } else if (lower.includes('scaffold') || lower.includes('permit') || lower.includes('safety')) {
+      entityCard = {
+        discipline: 'HSE',
+        targetActivityCode: 'HSE-L5-006',
+        targetActivityName: 'Scaffold Inspection',
+        progress: '32 of 40 inspections (80%)',
+        actualStart: '01 Aug 2026',
+        location: 'Plant Wide',
+        confidence: 95.0
+      };
+    } else if (lower.includes('hydrotest')) {
       entityCard = {
         discipline: 'Piping',
         targetActivityCode: 'PIP-L6-025',
@@ -138,7 +188,7 @@ export const TimeAgentView: React.FC = () => {
         discipline: 'Piping',
         targetActivityCode: 'PIP-L6-024A',
         targetActivityName: 'Erect Line 24-XX',
-        progress: '75%',
+        progress: '18 of 24 joints (75%)',
         actualStart: '12 Sep 2026',
         location: 'North pipe rack',
         confidence: 94.0
