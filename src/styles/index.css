@@ -1,0 +1,493 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  /* Industrial Engineering Palette - Crude Iron & Basalt Dark Shell */
+  --bg-base: #0B131F;
+  --bg-surface: #142032;
+  --bg-surface-elevated: #1C2C44;
+  --bg-surface-hover: #243856;
+  --bg-input: #0D1624;
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-focus: #0D9488;
+
+  /* Engineering Accents */
+  --oil-green: #10B981;
+  --oil-green-glow: rgba(16, 185, 129, 0.2);
+  --teal-accent: #0D9488;
+  --teal-subtle: rgba(13, 148, 136, 0.15);
+  --teal-border: rgba(13, 148, 136, 0.35);
+  --success: #10B981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --warning: #F59E0B;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --danger: #EF4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --info: #6366F1;
+  --info-bg: rgba(99, 102, 241, 0.12);
+
+  /* Typography */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --highlight-bg: rgba(245, 158, 11, 0.2);
+  --highlight-border: #F59E0B;
+
+  /* Architecture & Sizing */
+  --topbar-height: 56px;
+  --nav-width: 248px;
+  --card-radius: 8px;
+  --btn-radius: 6px;
+}
+
+[data-theme='light'] {
+  /* Industrial Drafting Palette - Technical Vellum & Linen Light Shell */
+  --bg-base: #F3F5F7;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #EAEEF2;
+  --bg-surface-hover: #DFE5EC;
+  --bg-input: #FFFFFF;
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --border-medium: rgba(0, 0, 0, 0.18);
+  --border-focus: #0D9488;
+
+  /* Engineering Accents */
+  --oil-green: #059669;
+  --oil-green-glow: rgba(5, 150, 105, 0.15);
+  --teal-accent: #0D9488;
+  --teal-subtle: rgba(13, 148, 136, 0.1);
+  --teal-border: rgba(13, 148, 136, 0.35);
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.1);
+  --warning: #D97706;
+  --warning-bg: rgba(217, 119, 6, 0.1);
+  --danger: #DC2626;
+  --danger-bg: rgba(220, 38, 38, 0.1);
+  --info: #4F46E5;
+  --info-bg: rgba(79, 70, 229, 0.1);
+
+  /* Typography */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --highlight-bg: rgba(245, 158, 11, 0.22);
+  --highlight-border: #D97706;
+}
+
+[data-theme='light'] .oil-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .oil-card:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.09);
+}
+
+[data-theme='light'] .btn-secondary {
+  background: #F1F5F9;
+  color: var(--text-primary);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme='light'] .btn-secondary:hover {
+  background: #E2E8F0;
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #0F172A;
+}
+
+[data-theme='light'] .input-field {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.16);
+  color: #0F172A;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) inset;
+}
+
+[data-theme='light'] .drawer-panel {
+  background: #FFFFFF;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: -12px 0 36px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme='light'] .modal-content {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme='light'] .modal-overlay,
+[data-theme='light'] .drawer-overlay {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+[data-theme='light'] mark.phrase-highlight {
+  color: #854D0E;
+  background-color: rgba(250, 204, 21, 0.25);
+  border-bottom: 2px solid #CA8A04;
+}
+
+[data-theme='light'] .badge-high,
+[data-theme='light'] .badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #065F46;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme='light'] .badge-medium,
+[data-theme='light'] .badge-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400E;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+[data-theme='light'] .badge-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #991B1B;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+[data-theme='light'] .badge-info {
+  background: rgba(2, 132, 199, 0.12);
+  color: #075985;
+  border-color: rgba(2, 132, 199, 0.35);
+}
+
+[data-theme='light'] .badge-gray,
+[data-theme='light'] .badge-neutral {
+  background: rgba(100, 116, 139, 0.1);
+  color: #334155;
+  border-color: rgba(100, 116, 139, 0.22);
+}
+
+[data-theme='light'] ::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* App Layout Structure */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.main-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.view-viewport {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+
+/* Industrial Instrument Card Surfaces */
+.oil-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-radius);
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.oil-card:hover {
+  border-color: var(--border-medium);
+}
+
+/* Action Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+  user-select: none;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: #0D9488;
+  color: #FFFFFF;
+  border-color: #0F766E;
+  box-shadow: 0 1px 4px rgba(13, 148, 136, 0.3);
+}
+
+.btn-primary:hover {
+  background: #14B8A6;
+  border-color: #0D9488;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.4);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  color: #FFFFFF;
+  border-color: rgba(251, 191, 36, 0.4);
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+  backdrop-filter: blur(6px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--border-medium);
+  color: #FFFFFF;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  color: #FFFFFF;
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+}
+
+/* Form Controls */
+.input-field {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--btn-radius);
+  color: var(--text-primary);
+  font-size: 13px;
+  padding: 9px 13px;
+  outline: none;
+  width: 100%;
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+
+.input-field:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15), 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* Badges & Technical Data Chips */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+}
+
+.badge-high, .badge-success {
+  background: rgba(16, 185, 129, 0.14);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-medium, .badge-warning {
+  background: rgba(245, 158, 11, 0.14);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-info {
+  background: rgba(56, 189, 248, 0.14);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.badge-gray, .badge-neutral {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-secondary);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+/* Source Document Highlight mark */
+mark.phrase-highlight {
+  background-color: var(--highlight-bg);
+  color: #FEF08A;
+  border-bottom: 2px solid var(--highlight-border);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+mark.phrase-highlight:hover {
+  background-color: rgba(250, 204, 21, 0.35);
+}
+
+/* Slide Drawer Overlay */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(3, 7, 18, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.drawer-panel {
+  width: 580px;
+  max-width: 92vw;
+  height: 100%;
+  background: #0E1626;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -12px 0 36px rgba(0, 0, 0, 0.65);
+  animation: slideLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Modal Box */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #131E33;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 640px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Pulse animation utility */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
