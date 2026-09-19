@@ -13,7 +13,8 @@ import {
   LogOut,
   User,
   Sun,
-  Moon
+  Moon,
+  Workflow
 } from 'lucide-react';
 
 export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGuidedDemo }) => {
@@ -26,10 +27,19 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
     currentUser,
     logout,
     theme,
-    toggleTheme
+    toggleTheme,
+    isRoleCoordinationOpen,
+    toggleRoleCoordination,
+    roleHandoffs
   } = useApp();
 
-  const roles: UserRole[] = ['Supervisor', 'Discipline Engineer', 'Planner', 'Project Manager'];
+  const roles: UserRole[] = [
+    'L5 Supervisor',
+    'L4 Discipline Engineer',
+    'L3 Planner',
+    'L2 Project Manager',
+    'L1 Project Director'
+  ];
 
   return (
     <header style={{
@@ -93,6 +103,36 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
         </button>
 
+        {/* Role Coordination & Hierarchy Toggle */}
+        <button
+          onClick={toggleRoleCoordination}
+          className="btn btn-secondary"
+          style={{
+            padding: '5px 11px',
+            fontSize: '12px',
+            borderColor: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--border-subtle)',
+            background: isRoleCoordinationOpen ? 'var(--teal-subtle)' : 'transparent',
+            color: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--text-secondary)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+          title="Toggle 5-Tier Role Coordination Pipeline (L1 - L5)"
+        >
+          <Workflow size={13} color={isRoleCoordinationOpen ? 'var(--teal-accent)' : 'currentColor'} />
+          <span>Hierarchy (L1–L5)</span>
+          <span style={{
+            background: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--border-subtle)',
+            color: isRoleCoordinationOpen ? '#0F172A' : 'var(--text-secondary)',
+            fontSize: '9.5px',
+            fontWeight: 800,
+            padding: '1px 5px',
+            borderRadius: '10px'
+          }}>
+            {roleHandoffs.length}
+          </span>
+        </button>
+
         {/* Guided Demo Button */}
         <button
           onClick={onStartGuidedDemo}
@@ -121,16 +161,18 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           <strong style={{ color: 'var(--text-primary)', fontFamily: 'monospace' }}>{settings.dataDate}</strong>
         </div>
 
-        {/* Active Role Selector */}
+        {/* Active Role Selector (L1 - L5) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <select
             value={settings.currentRole}
             onChange={(e) => setRole(e.target.value as UserRole)}
             className="input-field"
-            style={{ width: 'auto', padding: '5px 10px', fontSize: '12px', cursor: 'pointer', borderRadius: 'var(--btn-radius)' }}
+            style={{ width: 'auto', padding: '5px 10px', fontSize: '12px', cursor: 'pointer', borderRadius: 'var(--btn-radius)', fontWeight: 600 }}
           >
             {roles.map(r => (
-              <option key={r} value={r}>Role: {r}</option>
+              <option key={r} value={r}>
+                {r}
+              </option>
             ))}
           </select>
         </div>
@@ -164,17 +206,20 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
         </button>
 
         {/* Logged-in User Profile & Sign Out */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'var(--bg-base)',
-          border: '1px solid var(--border-subtle)',
-          padding: '4px 6px 4px 10px',
-          borderRadius: 'var(--btn-radius)',
-          fontSize: '12px',
-          marginLeft: '4px'
-        }}>
+        <div 
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'var(--bg-base)',
+            border: '1px solid var(--border-subtle)',
+            padding: '4px 8px 4px 10px',
+            borderRadius: 'var(--btn-radius)',
+            fontSize: '12px',
+            marginLeft: '4px'
+          }}
+          title={`Reports to: ${currentUser.reportsTo || 'N/A'} | Supervises: ${currentUser.supervises || 'N/A'}`}
+        >
           <div style={{
             width: '24px',
             height: '24px',
@@ -190,7 +235,19 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
             {currentUser.name.charAt(0)}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-            <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--text-primary)' }}>{currentUser.name}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--text-primary)' }}>{currentUser.name}</span>
+              <span style={{
+                fontSize: '9px',
+                fontWeight: 800,
+                color: 'var(--teal-accent)',
+                background: 'var(--teal-subtle)',
+                padding: '0 4px',
+                borderRadius: '3px'
+              }}>
+                L{currentUser.level || 3}
+              </span>
+            </div>
             <span style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{currentUser.role}</span>
           </div>
           <button

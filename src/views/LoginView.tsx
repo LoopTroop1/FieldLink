@@ -15,21 +15,31 @@ import {
   KeyRound,
   Sparkles,
   Sun,
-  Moon
+  Moon,
+  Crown,
+  Workflow
 } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
   const { login, project, theme, toggleTheme } = useApp();
 
-  const [selectedRole, setSelectedRole] = useState<UserRole>('Planner');
-  const [emailOrId, setEmailOrId] = useState<string>(DEMO_USERS['Planner'].email);
+  const [selectedRole, setSelectedRole] = useState<UserRole>('L3 Planner');
+  const [emailOrId, setEmailOrId] = useState<string>(DEMO_USERS['L3 Planner'].email);
   const [passcode, setPasscode] = useState<string>('••••••••••••');
   const [rememberSession, setRememberSession] = useState<boolean>(true);
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
 
+  const primaryRoles: UserRole[] = [
+    'L5 Supervisor',
+    'L4 Discipline Engineer',
+    'L3 Planner',
+    'L2 Project Manager',
+    'L1 Project Director'
+  ];
+
   const handleRoleSelect = (role: UserRole) => {
     setSelectedRole(role);
-    setEmailOrId(DEMO_USERS[role].email);
+    setEmailOrId(DEMO_USERS[role]?.email || DEMO_USERS['L3 Planner'].email);
   };
 
   const handleQuickLogin = (role: UserRole) => {
@@ -54,6 +64,7 @@ export const LoginView: React.FC = () => {
   };
 
   const roleMeta: Record<UserRole, {
+    levelCode: 'L5' | 'L4' | 'L3' | 'L2' | 'L1';
     icon: React.ReactNode;
     color: string;
     bgGlow: string;
@@ -61,35 +72,85 @@ export const LoginView: React.FC = () => {
     responsibilities: string;
     landingScreen: string;
   }> = {
-    'Planner': {
-      icon: <Briefcase size={20} color="#38BDF8" />,
-      color: '#38BDF8',
-      bgGlow: 'rgba(56, 189, 248, 0.12)',
-      badge: 'Planning & Project Controls',
-      responsibilities: 'Schedule mutation authority, fast-track gating, predecessor override, mock PMIS sync',
-      landingScreen: 'Planner Review Queue & Gantt'
+    'L5 Supervisor': {
+      levelCode: 'L5',
+      icon: <HardHat size={20} color="#10B981" />,
+      color: '#10B981',
+      bgGlow: 'rgba(16, 185, 129, 0.12)',
+      badge: 'Level 5 — Piping & Field Execution Lead',
+      responsibilities: 'On-site voice logging, WhatsApp Time Agent, daily progress report (DPR) capture, shift handovers',
+      landingScreen: 'Time Agent & Data Ingestion Hub'
     },
+    'L4 Discipline Engineer': {
+      levelCode: 'L4',
+      icon: <Wrench size={20} color="#F59E0B" />,
+      color: '#F59E0B',
+      bgGlow: 'rgba(245, 158, 11, 0.12)',
+      badge: 'Level 4 — Field Discipline Engineer',
+      responsibilities: 'Extraction workspace verification, drawing/P&ID linking, quantity & UOM technical validation',
+      landingScreen: 'Extraction Workspace & Quality Hub'
+    },
+    'L3 Planner': {
+      levelCode: 'L3',
+      icon: <Briefcase size={20} color="#0EA5E9" />,
+      color: '#0EA5E9',
+      bgGlow: 'rgba(14, 165, 233, 0.12)',
+      badge: 'Level 3 — Lead Planning Engineer',
+      responsibilities: '6-signal schedule linking, out-of-sequence safety gating, 1:N splitting, activity mapping approval',
+      landingScreen: 'Schedule Linker & Planner Review Queue'
+    },
+    'L2 Project Manager': {
+      levelCode: 'L2',
+      icon: <BarChart3 size={20} color="#8B5CF6" />,
+      color: '#8B5CF6',
+      bgGlow: 'rgba(139, 92, 246, 0.12)',
+      badge: 'Level 2 — Project Controls Manager',
+      responsibilities: 'Real-time S-curves, What-If delay ripple simulation, contractor claims, Oracle P6 sync authorization',
+      landingScreen: 'Operations Overview & What-If Analytics'
+    },
+    'L1 Project Director': {
+      levelCode: 'L1',
+      icon: <Crown size={20} color="#EC4899" />,
+      color: '#EC4899',
+      bgGlow: 'rgba(236, 72, 153, 0.12)',
+      badge: 'Level 1 — Executive Project Director',
+      responsibilities: 'Executive portfolio health, macro milestone governance (L1/L2), institutional memory benchmarks',
+      landingScreen: 'Executive Portfolio Cockpit & Project Memory'
+    },
+    // Backward-compatible aliases
     'Supervisor': {
-      icon: <HardHat size={20} color="#34D399" />,
-      color: '#34D399',
-      bgGlow: 'rgba(52, 211, 153, 0.12)',
-      badge: 'Piping & Field Execution',
+      levelCode: 'L5',
+      icon: <HardHat size={20} color="#10B981" />,
+      color: '#10B981',
+      bgGlow: 'rgba(16, 185, 129, 0.12)',
+      badge: 'Level 5 — Piping & Field Execution Lead',
       responsibilities: 'On-site voice logging, WhatsApp Time Agent, daily progress report (DPR) capture',
       landingScreen: 'Time Agent Conversational UI'
     },
     'Discipline Engineer': {
-      icon: <Wrench size={20} color="#FBBF24" />,
-      color: '#FBBF24',
-      bgGlow: 'rgba(251, 191, 36, 0.12)',
-      badge: 'Discipline Engineering (Piping / Civil)',
+      levelCode: 'L4',
+      icon: <Wrench size={20} color="#F59E0B" />,
+      color: '#F59E0B',
+      bgGlow: 'rgba(245, 158, 11, 0.12)',
+      badge: 'Level 4 — Field Discipline Engineer',
       responsibilities: 'Extraction workspace verification, phrase highlighting, quantity & UOM refinement',
       landingScreen: 'Extraction Workspace & Linker'
     },
+    'Planner': {
+      levelCode: 'L3',
+      icon: <Briefcase size={20} color="#0EA5E9" />,
+      color: '#0EA5E9',
+      bgGlow: 'rgba(14, 165, 233, 0.12)',
+      badge: 'Level 3 — Lead Planning Engineer',
+      responsibilities: 'Schedule mutation authority, fast-track gating, predecessor override, mock PMIS sync',
+      landingScreen: 'Planner Review Queue & Gantt'
+    },
     'Project Manager': {
-      icon: <BarChart3 size={20} color="#A78BFA" />,
-      color: '#A78BFA',
-      bgGlow: 'rgba(167, 139, 250, 0.12)',
-      badge: 'Directorate of Surface Projects',
+      levelCode: 'L2',
+      icon: <BarChart3 size={20} color="#8B5CF6" />,
+      color: '#8B5CF6',
+      bgGlow: 'rgba(139, 92, 246, 0.12)',
+      badge: 'Level 2 — Project Controls Manager',
       responsibilities: 'Executive KPI tracking, cumulative S-curves, delay risk analysis, audit surveillance',
       landingScreen: 'Operations Overview & Analytics'
     }
@@ -230,9 +291,9 @@ export const LoginView: React.FC = () => {
                 Test the planning-to-execution bridge through the distinct perspectives of site supervisors, discipline engineers, planners, or executives.
               </p>
 
-              {/* Persona Cards Grid */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {(Object.keys(roleMeta) as UserRole[]).map((role) => {
+              {/* Persona Cards Grid (L5 down to L1) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {primaryRoles.map((role) => {
                   const meta = roleMeta[role];
                   const user = DEMO_USERS[role];
                   const isSelected = selectedRole === role;
@@ -246,8 +307,8 @@ export const LoginView: React.FC = () => {
                           ? meta.bgGlow 
                           : (theme === 'dark' ? 'rgba(15, 23, 42, 0.5)' : '#F8FAFC'),
                         border: `1.5px solid ${isSelected ? meta.color : (theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)')}`,
-                        borderRadius: '12px',
-                        padding: '16px 18px',
+                        borderRadius: '10px',
+                        padding: '14px 16px',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
                         display: 'flex',
@@ -255,11 +316,11 @@ export const LoginView: React.FC = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1, marginRight: '12px' }}>
                         <div style={{
-                          width: '42px',
-                          height: '42px',
-                          borderRadius: '10px',
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '8px',
                           background: 'rgba(255, 255, 255, 0.05)',
                           border: `1px solid ${meta.color}40`,
                           display: 'flex',
@@ -270,17 +331,27 @@ export const LoginView: React.FC = () => {
                           {meta.icon}
                         </div>
 
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                            <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px', flexWrap: 'wrap' }}>
+                            <span style={{
+                              fontSize: '10px',
+                              fontWeight: 800,
+                              color: '#fff',
+                              background: meta.color,
+                              padding: '1px 5px',
+                              borderRadius: '4px'
+                            }}>
+                              {meta.levelCode}
+                            </span>
+                            <span style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--text-primary)' }}>
                               {user.name}
                             </span>
                             <span style={{
-                              fontSize: '10.5px',
+                              fontSize: '10px',
                               fontWeight: 700,
                               color: meta.color,
                               background: `${meta.color}18`,
-                              padding: '2px 7px',
+                              padding: '1px 6px',
                               borderRadius: '4px',
                               border: `1px solid ${meta.color}30`
                             }}>
@@ -288,12 +359,28 @@ export const LoginView: React.FC = () => {
                             </span>
                           </div>
 
-                          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                            {meta.badge}, ID <code style={{ color: 'var(--teal-accent)' }}>{user.badgeNumber}</code>
+                          <div style={{ fontSize: '10.5px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                            {meta.badge} • ID <code style={{ color: 'var(--teal-accent)' }}>{user.badgeNumber}</code>
                           </div>
 
-                          <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                          <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', lineHeight: 1.35, marginBottom: '4px' }}>
                             {meta.responsibilities}
+                          </div>
+
+                          {/* Role Coordination & Hierarchy Connection */}
+                          <div style={{
+                            display: 'flex',
+                            gap: '12px',
+                            fontSize: '10px',
+                            color: 'var(--text-secondary)',
+                            background: 'rgba(0, 0, 0, 0.15)',
+                            padding: '3px 8px',
+                            borderRadius: '4px',
+                            marginTop: '2px'
+                          }}>
+                            <span>Upstream: <strong style={{ color: '#38BDF8' }}>{user.reportsTo || 'Executive Board'}</strong></span>
+                            <span>Directs: <strong style={{ color: '#34D399' }}>{user.supervises || 'Field Personnel'}</strong></span>
+                            <span>Target: <strong style={{ color: meta.color }}>{meta.landingScreen}</strong></span>
                           </div>
                         </div>
                       </div>
@@ -305,8 +392,8 @@ export const LoginView: React.FC = () => {
                         }}
                         className="btn btn-primary"
                         style={{
-                          padding: '7px 14px',
-                          fontSize: '12px',
+                          padding: '6px 12px',
+                          fontSize: '11.5px',
                           background: isSelected ? meta.color : (theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0'),
                           color: isSelected ? '#0F172A' : 'var(--text-primary)',
                           border: `1px solid ${meta.color}`,
@@ -315,7 +402,7 @@ export const LoginView: React.FC = () => {
                         }}
                         disabled={isAuthenticating}
                       >
-                        Sign In
+                        Sign In {meta.levelCode}
                       </button>
                     </div>
                   );
@@ -443,9 +530,9 @@ export const LoginView: React.FC = () => {
                     className="input-field"
                     style={{ cursor: 'pointer' }}
                   >
-                    {(Object.keys(roleMeta) as UserRole[]).map(r => (
+                    {primaryRoles.map(r => (
                       <option key={r} value={r}>
-                        {r} — {roleMeta[r].badge}
+                        {roleMeta[r]?.levelCode} — {r} ({DEMO_USERS[r]?.name})
                       </option>
                     ))}
                   </select>

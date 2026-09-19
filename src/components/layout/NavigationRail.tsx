@@ -12,7 +12,9 @@ import {
   Brain,
   History,
   Settings,
-  Sparkles
+  Sparkles,
+  Workflow,
+  ArrowUpRight
 } from 'lucide-react';
 
 interface NavItem {
@@ -21,11 +23,18 @@ interface NavItem {
   icon: React.ReactNode;
   group: 'OPERATIONS' | 'SCHEDULE INTELLIGENCE' | 'INSIGHTS & GOVERNANCE';
   badge?: string | number;
-  badgeType?: 'warning' | 'danger' | 'info' | 'neutral';
+  badgeType?: 'warning' | 'danger' | 'info' | 'neutral' | 'primary';
 }
 
 export const NavigationRail: React.FC = () => {
-  const { activeView, setActiveView, progressEvents, fieldRecords } = useApp();
+  const { 
+    activeView, 
+    setActiveView, 
+    progressEvents, 
+    fieldRecords, 
+    currentUser,
+    toggleRoleCoordination
+  } = useApp();
 
   // Count pending reviews
   const pendingReviewCount = progressEvents.filter(e => e.validationStatus === 'pending').length;
@@ -114,6 +123,17 @@ export const NavigationRail: React.FC = () => {
     'INSIGHTS & GOVERNANCE'
   ];
 
+  const rolePrimaryViews: Record<number, AppView[]> = {
+    5: ['time-agent', 'ingestion'],
+    4: ['extraction', 'linker'],
+    3: ['review', 'linker', 'schedule'],
+    2: ['overview', 'analytics', 'audit'],
+    1: ['memory', 'overview', 'analytics']
+  };
+
+  const userLevel = currentUser.level || 3;
+  const primaryForCurrent = rolePrimaryViews[userLevel] || [];
+
   return (
     <nav style={{
       width: 'var(--nav-width)',
@@ -142,6 +162,8 @@ export const NavigationRail: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
               {navItems.filter(i => i.group === grp).map(item => {
                 const isActive = activeView === item.id;
+                const isPrimaryForRole = primaryForCurrent.includes(item.id);
+
                 return (
                   <button
                     key={item.id}
@@ -153,14 +175,14 @@ export const NavigationRail: React.FC = () => {
                       padding: '8px 12px',
                       borderRadius: 'var(--btn-radius)',
                       fontSize: '12.5px',
-                      fontWeight: isActive ? 600 : 500,
+                      fontWeight: isActive ? 600 : (isPrimaryForRole ? 600 : 500),
                       color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                       background: isActive 
                         ? 'var(--teal-subtle)' 
-                        : 'transparent',
+                        : (isPrimaryForRole ? 'rgba(14, 165, 233, 0.04)' : 'transparent'),
                       borderLeft: isActive 
                         ? '3px solid var(--teal-accent)' 
-                        : '3px solid transparent',
+                        : (isPrimaryForRole ? '3px solid rgba(14, 165, 233, 0.4)' : '3px solid transparent'),
                       borderTop: '1px solid transparent',
                       borderRight: '1px solid transparent',
                       borderBottom: '1px solid transparent',
@@ -176,14 +198,14 @@ export const NavigationRail: React.FC = () => {
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.background = 'transparent';
+                        e.currentTarget.style.background = isPrimaryForRole ? 'rgba(14, 165, 233, 0.04)' : 'transparent';
                         e.currentTarget.style.color = 'var(--text-secondary)';
                       }
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <span style={{ 
-                        color: isActive ? 'var(--teal-accent)' : 'var(--text-muted)',
+                        color: isActive ? 'var(--teal-accent)' : (isPrimaryForRole ? 'var(--teal-accent)' : 'var(--text-muted)'),
                         display: 'flex',
                         alignItems: 'center'
                       }}>
@@ -192,11 +214,26 @@ export const NavigationRail: React.FC = () => {
                       <span>{item.label}</span>
                     </div>
 
-                    {item.badge !== undefined && (
-                      <span className={`badge badge-${item.badgeType || 'neutral'}`} style={{ fontSize: '10px', padding: '2px 6px' }}>
-                        {item.badge}
-                      </span>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      {isPrimaryForRole && !item.badge && (
+                        <span style={{
+                          fontSize: '9px',
+                          fontWeight: 700,
+                          color: 'var(--teal-accent)',
+                          background: 'var(--teal-subtle)',
+                          padding: '1px 5px',
+                          borderRadius: '3px'
+                        }}>
+                          L{userLevel}
+                        </span>
+                      )}
+
+                      {item.badge !== undefined && (
+                        <span className={`badge badge-${item.badgeType || 'neutral'}`} style={{ fontSize: '10px', padding: '2px 6px' }}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                   </button>
                 );
               })}
@@ -205,21 +242,72 @@ export const NavigationRail: React.FC = () => {
         ))}
       </div>
 
-      {/* Engineering Engine Status Footer */}
-      <div style={{
-        background: 'var(--bg-base)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--btn-radius)',
-        padding: '12px 14px',
-        fontSize: '11.5px',
-        color: 'var(--text-secondary)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--teal-accent)', fontWeight: 700, marginBottom: '3px' }}>
-          <Sparkles size={14} />
-          <span>Deterministic Matching Engine</span>
+      {/* Role Coordination & Status Footer */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {/* Active Role Hierarchy Card */}
+        <div style={{
+          background: 'var(--bg-base)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--btn-radius)',
+          padding: '10px 12px',
+          fontSize: '11px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+            <span style={{
+              fontSize: '9.5px',
+              fontWeight: 800,
+              background: 'var(--teal-accent)',
+              padding: '1px 5px',
+              borderRadius: '3px',
+              color: '#0F172A'
+            }}>
+              L{userLevel} Persona
+            </span>
+            <button
+              onClick={toggleRoleCoordination}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--teal-accent)',
+                cursor: 'pointer',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2px',
+                padding: 0
+              }}
+              title="Toggle L1-L5 Role Pipeline"
+            >
+              <Workflow size={11} />
+              <span>Pipeline</span>
+            </button>
+          </div>
+
+          <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '2px' }}>
+            {currentUser.name}
+          </div>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '10.5px', lineHeight: 1.3 }}>
+            Reports to: <strong style={{ color: '#38BDF8' }}>{currentUser.reportsTo || 'Executive Board'}</strong>
+          </div>
         </div>
-        <div style={{ color: 'var(--text-muted)', fontSize: '11px', lineHeight: 1.4 }}>
-          6-Signal Traceable Architecture | Air-Gapped Operation
+
+        {/* Deterministic Matching Engine Card */}
+        <div style={{
+          background: 'var(--bg-base)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--btn-radius)',
+          padding: '10px 12px',
+          fontSize: '11px',
+          color: 'var(--text-secondary)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--teal-accent)', fontWeight: 700, marginBottom: '2px' }}>
+            <Sparkles size={13} />
+            <span>Deterministic Engine</span>
+          </div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '10px', lineHeight: 1.35 }}>
+            6-Signal Linking | Air-Gapped Operation
+          </div>
         </div>
       </div>
     </nav>

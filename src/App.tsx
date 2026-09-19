@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppProvider, useApp, AppView } from './context/AppContext';
 import { TopBar } from './components/layout/TopBar';
+import { RoleCoordinationBar } from './components/layout/RoleCoordinationBar';
 import { NavigationRail } from './components/layout/NavigationRail';
 import { GuidedDemoBanner } from './components/layout/GuidedDemoBanner';
 
@@ -94,6 +95,9 @@ const AppContent: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', overflow: 'hidden' }}>
       {/* Persistent Global TopBar */}
       <TopBar onStartGuidedDemo={handleStartGuidedDemo} />
+
+      {/* Role Coordination & 5-Tier Handoff Pipeline */}
+      <RoleCoordinationBar />
 
       {/* Guided Walkthrough Banner if active */}
       {isGuidedDemoActive && (

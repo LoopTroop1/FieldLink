@@ -12,7 +12,8 @@ import {
   AllocationSplitItem,
   MatchCandidate,
   AuthUser,
-  DEMO_USERS
+  DEMO_USERS,
+  RoleHandoffItem
 } from '../types';
 
 import { StorageService } from '../services/storageService';
@@ -40,11 +41,71 @@ export type AppView =
   | 'settings';
 
 const ROLE_INITIAL_VIEW_MAP: Record<UserRole, AppView> = {
+  'L5 Supervisor': 'time-agent',
+  'L4 Discipline Engineer': 'extraction',
+  'L3 Planner': 'review',
+  'L2 Project Manager': 'overview',
+  'L1 Project Director': 'memory',
   'Supervisor': 'time-agent',
   'Discipline Engineer': 'extraction',
   'Planner': 'review',
   'Project Manager': 'overview'
 };
+
+const INITIAL_ROLE_HANDOFFS: RoleHandoffItem[] = [
+  {
+    id: 'hnd-01',
+    timestamp: '12 Sep 2026, 08:45',
+    fromRole: 'L5 Supervisor',
+    fromName: 'Ramesh Sharma',
+    toRole: 'L4 Discipline Engineer',
+    toName: 'Vikram Patel',
+    action: 'Dispatched Field Daily Progress Report',
+    activityCode: 'PIP-L6-024A',
+    activityName: 'Erect Line 24-XX (18 of 24 joints complete)',
+    status: 'dispatched',
+    note: 'Crew completed 18 welds in North Pipe rack; NDT clearance pending for J-19 to J-24.'
+  },
+  {
+    id: 'hnd-02',
+    timestamp: '12 Sep 2026, 11:20',
+    fromRole: 'L4 Discipline Engineer',
+    fromName: 'Vikram Patel',
+    toRole: 'L3 Planner',
+    toName: 'Rajiv Sen',
+    action: 'Endorsed Technical Spans & Unit Conversion',
+    activityCode: 'PIP-L6-024A',
+    activityName: 'Erect Line 24-XX',
+    status: 'endorsed',
+    note: 'Verified drawing P&ID-2401 alignment; confirmed 75% physical progress is technically accurate.'
+  },
+  {
+    id: 'hnd-03',
+    timestamp: '12 Sep 2026, 14:10',
+    fromRole: 'L3 Planner',
+    fromName: 'Rajiv Sen',
+    toRole: 'L2 Project Manager',
+    toName: 'S. Banerjee',
+    action: 'Approved Schedule Linking & Gated Predecessor Override',
+    activityCode: 'PIP-L6-024A',
+    activityName: 'Erect Line 24-XX',
+    status: 'approved',
+    note: '6-signal confidence 94.8%. Out-of-sequence override accepted with site safety waiver.'
+  },
+  {
+    id: 'hnd-04',
+    timestamp: '15 Sep 2026, 16:30',
+    fromRole: 'L2 Project Manager',
+    fromName: 'S. Banerjee',
+    toRole: 'L1 Project Director',
+    toName: 'Dr. Amitabh Roy',
+    action: 'Authorized Enterprise PMIS Synchronization Payload',
+    activityCode: 'PIP-L6-024A',
+    activityName: 'Sync Tx-DEMO-864607',
+    status: 'synced',
+    note: 'Dispatched P6 EPPM update. Forecast milestone variance held at +1.0 day.'
+  }
+];
 
 interface AppContextType {
   project: Project;
@@ -91,6 +152,11 @@ interface AppContextType {
   syncWithPMIS: (activityId: string) => Promise<void>;
   proposeNewActivity: (event: ProgressEvent, description: string, discipline: any, location: string) => void;
   setRole: (role: UserRole) => void;
+  switchRole: (role: UserRole) => void;
+  roleHandoffs: RoleHandoffItem[];
+  addRoleHandoff: (item: Omit<RoleHandoffItem, 'id' | 'timestamp'>) => void;
+  isRoleCoordinationOpen: boolean;
+  toggleRoleCoordination: () => void;
   togglePrivacyMode: () => void;
   resetAllData: () => void;
   getCandidatesForEvent: (event: ProgressEvent) => MatchCandidate[];
@@ -116,9 +182,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [currentUser, setCurrentUser] = useState<AuthUser>(() => {
-    const savedRole = StorageService.loadSettings().currentRole || 'Planner';
-    return DEMO_USERS[savedRole] || DEMO_USERS['Planner'];
+    const savedRole = StorageService.loadSettings().currentRole || 'L3 Planner';
+    return DEMO_USERS[savedRole] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
   });
+
+  // Role Coordination & Handoffs State
+  const [roleHandoffs, setRoleHandoffs] = useState<RoleHandoffItem[]>(INITIAL_ROLE_HANDOFFS);
+  const [isRoleCoordinationOpen, setIsRoleCoordinationOpen] = useState<boolean>(true);
 
   // Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -506,8 +576,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const switchRole = (role: UserRole) => {
+    const targetUser = DEMO_USERS[role] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
+    setCurrentUser(targetUser);
+    setSettings(prev => ({ ...prev, currentRole: role }));
+    setActiveView(ROLE_INITIAL_VIEW_MAP[role] || 'overview');
+  };
+
+  const toggleRoleCoordination = () => {
+    setIsRoleCoordinationOpen(prev => !prev);
+  };
+
+  const addRoleHandoff = (item: Omit<RoleHandoffItem, 'id' | 'timestamp'>) => {
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const fullItem: RoleHandoffItem = {
+      ...item,
+      id: `hnd-${Date.now()}`,
+      timestamp: `Today, ${timeStr}`
+    };
+    setRoleHandoffs(prev => [fullItem, ...prev]);
+  };
+
   const login = (role: UserRole, customUser?: Partial<AuthUser>) => {
-    const baseUser = DEMO_USERS[role] || DEMO_USERS['Planner'];
+    const baseUser = DEMO_USERS[role] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
     const userToSet: AuthUser = {
       ...baseUser,
       ...customUser,
@@ -595,6 +686,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         syncWithPMIS,
         proposeNewActivity,
         setRole,
+        switchRole,
+        roleHandoffs,
+        addRoleHandoff,
+        isRoleCoordinationOpen,
+        toggleRoleCoordination,
         togglePrivacyMode,
         resetAllData,
         getCandidatesForEvent,

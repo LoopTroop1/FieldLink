@@ -77,6 +77,11 @@ export type MemoryType =
   | 'lesson';
 
 export type UserRole = 
+  | 'L5 Supervisor' 
+  | 'L4 Discipline Engineer' 
+  | 'L3 Planner' 
+  | 'L2 Project Manager' 
+  | 'L1 Project Director'
   | 'Supervisor' 
   | 'Discipline Engineer' 
   | 'Planner' 
@@ -91,48 +96,173 @@ export interface AuthUser {
   employeeId: string;
   badgeNumber: string;
   avatarColor: string;
+  level: 1 | 2 | 3 | 4 | 5;
+  levelName: string;
+  reportsTo: string;
+  supervises: string;
+  responsibilities: string;
+  landingScreen: string;
+}
+
+export interface RoleHandoffItem {
+  id: string;
+  timestamp: string;
+  fromRole: UserRole;
+  fromName: string;
+  toRole: UserRole;
+  toName: string;
+  action: string;
+  activityCode?: string;
+  activityName?: string;
+  status: 'dispatched' | 'endorsed' | 'approved' | 'synced' | 'flagged' | 'submitted';
+  note?: string;
 }
 
 export const DEMO_USERS: Record<UserRole, AuthUser> = {
-  'Planner': {
+  'L5 Supervisor': {
+    id: 'user-supervisor',
+    name: 'Ramesh Sharma',
+    email: 'ramesh.sharma@fieldlink.io',
+    role: 'L5 Supervisor',
+    department: 'Piping & Field Execution',
+    employeeId: 'FL-SUP-1109',
+    badgeNumber: 'FL-EXP-B12',
+    avatarColor: '#10B981',
+    level: 5,
+    levelName: 'Level 5 — Field Execution Lead',
+    reportsTo: 'L4 Discipline Engineer & L3 Lead Planner',
+    supervises: 'Site Execution Crews, Welders & Subcontractors',
+    responsibilities: 'Frontline voice/chat logging, Daily Progress Reports (DPR), site shift handover, actual quantity tracking',
+    landingScreen: 'Time Agent & Data Ingestion Hub'
+  },
+  'L4 Discipline Engineer': {
+    id: 'user-engineer',
+    name: 'Vikram Patel',
+    email: 'vikram.patel@fieldlink.io',
+    role: 'L4 Discipline Engineer',
+    department: 'Mechanical & Piping Engineering',
+    employeeId: 'FL-ENG-3391',
+    badgeNumber: 'FL-EXP-C04',
+    avatarColor: '#F59E0B',
+    level: 4,
+    levelName: 'Level 4 — Field Discipline Engineer',
+    reportsTo: 'L3 Lead Planner & L2 Project Controls Manager',
+    supervises: 'Field Inspectors & Quality Control Technicians',
+    responsibilities: 'Technical extraction verification, phrase-to-drawing linking, quantity & UOM validation, engineering endorsement',
+    landingScreen: 'Extraction Workspace & Quality Hub'
+  },
+  'L3 Planner': {
     id: 'user-planner',
     name: 'Rajiv Sen',
     email: 'rajiv.sen@fieldlink.io',
-    role: 'Planner',
+    role: 'L3 Planner',
     department: 'Planning & Project Controls',
     employeeId: 'FL-PL-0482',
     badgeNumber: 'FL-EXP-A01',
-    avatarColor: '#0EA5E9'
+    avatarColor: '#0EA5E9',
+    level: 3,
+    levelName: 'Level 3 — Lead Planning Engineer',
+    reportsTo: 'L2 Project Controls Manager',
+    supervises: 'L5 Supervisors & Planning Coordinators',
+    responsibilities: '6-signal schedule linking, out-of-sequence safety gating, 1:N splitting, Level 5/6 activity mapping, schedule mutation approval',
+    landingScreen: 'Schedule Linker & Planner Review Queue'
   },
+  'L2 Project Manager': {
+    id: 'user-pm',
+    name: 'S. Banerjee',
+    email: 's.banerjee@fieldlink.io',
+    role: 'L2 Project Manager',
+    department: 'Project Controls & Construction Directorate',
+    employeeId: 'FL-PM-0077',
+    badgeNumber: 'FL-EXP-HQ01',
+    avatarColor: '#8B5CF6',
+    level: 2,
+    levelName: 'Level 2 — Project Controls Manager',
+    reportsTo: 'L1 Executive Project Director',
+    supervises: 'L3 Lead Planners & Discipline Engineering Leads',
+    responsibilities: 'Earned value analysis, real-time cumulative S-curves, What-If delay ripple simulation, contractor claims, Oracle P6 sync authorization',
+    landingScreen: 'Operations Overview & What-If Analytics'
+  },
+  'L1 Project Director': {
+    id: 'user-director',
+    name: 'Dr. Amitabh Roy',
+    email: 'amitabh.roy@fieldlink.io',
+    role: 'L1 Project Director',
+    department: 'Executive Project Directorate (EPPM)',
+    employeeId: 'FL-DIR-0001',
+    badgeNumber: 'FL-EXP-EXEC01',
+    avatarColor: '#EC4899',
+    level: 1,
+    levelName: 'Level 1 — Executive Project Director',
+    reportsTo: 'Executive Board & Capital Investment Committee',
+    supervises: 'All Project Managers (L2) & Section Heads',
+    responsibilities: 'Executive portfolio health, macro milestone governance (L1/L2), institutional memory benchmarks, organizational learning sign-off',
+    landingScreen: 'Executive Portfolio Cockpit & Project Memory'
+  },
+  // Backward compatibility aliases
   'Supervisor': {
     id: 'user-supervisor',
     name: 'Ramesh Sharma',
     email: 'ramesh.sharma@fieldlink.io',
-    role: 'Supervisor',
+    role: 'L5 Supervisor',
     department: 'Piping & Field Execution',
     employeeId: 'FL-SUP-1109',
     badgeNumber: 'FL-EXP-B12',
-    avatarColor: '#10B981'
+    avatarColor: '#10B981',
+    level: 5,
+    levelName: 'Level 5 — Field Execution Lead',
+    reportsTo: 'L4 Discipline Engineer & L3 Lead Planner',
+    supervises: 'Site Execution Crews, Welders & Subcontractors',
+    responsibilities: 'Frontline voice/chat logging, Daily Progress Reports (DPR), site shift handover, actual quantity tracking',
+    landingScreen: 'Time Agent & Data Ingestion Hub'
   },
   'Discipline Engineer': {
     id: 'user-engineer',
     name: 'Vikram Patel',
     email: 'vikram.patel@fieldlink.io',
-    role: 'Discipline Engineer',
+    role: 'L4 Discipline Engineer',
     department: 'Mechanical & Piping Engineering',
     employeeId: 'FL-ENG-3391',
     badgeNumber: 'FL-EXP-C04',
-    avatarColor: '#F59E0B'
+    avatarColor: '#F59E0B',
+    level: 4,
+    levelName: 'Level 4 — Field Discipline Engineer',
+    reportsTo: 'L3 Lead Planner & L2 Project Controls Manager',
+    supervises: 'Field Inspectors & Quality Control Technicians',
+    responsibilities: 'Technical extraction verification, phrase-to-drawing linking, quantity & UOM validation, engineering endorsement',
+    landingScreen: 'Extraction Workspace & Quality Hub'
+  },
+  'Planner': {
+    id: 'user-planner',
+    name: 'Rajiv Sen',
+    email: 'rajiv.sen@fieldlink.io',
+    role: 'L3 Planner',
+    department: 'Planning & Project Controls',
+    employeeId: 'FL-PL-0482',
+    badgeNumber: 'FL-EXP-A01',
+    avatarColor: '#0EA5E9',
+    level: 3,
+    levelName: 'Level 3 — Lead Planning Engineer',
+    reportsTo: 'L2 Project Controls Manager',
+    supervises: 'L5 Supervisors & Planning Coordinators',
+    responsibilities: '6-signal schedule linking, out-of-sequence safety gating, 1:N splitting, Level 5/6 activity mapping, schedule mutation approval',
+    landingScreen: 'Schedule Linker & Planner Review Queue'
   },
   'Project Manager': {
     id: 'user-pm',
     name: 'S. Banerjee',
     email: 's.banerjee@fieldlink.io',
-    role: 'Project Manager',
-    department: 'Directorate of Capital Projects',
-    employeeId: 'FL-DIR-0077',
+    role: 'L2 Project Manager',
+    department: 'Project Controls & Construction Directorate',
+    employeeId: 'FL-PM-0077',
     badgeNumber: 'FL-EXP-HQ01',
-    avatarColor: '#8B5CF6'
+    avatarColor: '#8B5CF6',
+    level: 2,
+    levelName: 'Level 2 — Project Controls Manager',
+    reportsTo: 'L1 Executive Project Director',
+    supervises: 'L3 Lead Planners & Discipline Engineering Leads',
+    responsibilities: 'Earned value analysis, real-time cumulative S-curves, What-If delay ripple simulation, contractor claims, Oracle P6 sync authorization',
+    landingScreen: 'Operations Overview & What-If Analytics'
   }
 };
 
