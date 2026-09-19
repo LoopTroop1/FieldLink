@@ -17,6 +17,12 @@ import { ProjectMemoryView } from './views/ProjectMemoryView';
 import { AuditTrailView } from './views/AuditTrailView';
 import { SettingsView } from './views/SettingsView';
 
+import { SupervisorWorkspace } from './views/workspaces/SupervisorWorkspace';
+import { PlannerWorkspace } from './views/workspaces/PlannerWorkspace';
+import { DisciplineEngineerWorkspace } from './views/workspaces/DisciplineEngineerWorkspace';
+import { ProjectManagerWorkspace } from './views/workspaces/ProjectManagerWorkspace';
+import { ProjectDirectorWorkspace } from './views/workspaces/ProjectDirectorWorkspace';
+
 import { P6PayloadDrawer } from './components/drawers/P6PayloadDrawer';
 import { EvidenceTraceDrawer } from './components/drawers/EvidenceTraceDrawer';
 import { LoginView } from './views/LoginView';
@@ -64,6 +70,16 @@ const AppContent: React.FC = () => {
 
   const renderActiveView = () => {
     switch (activeView) {
+      case 'supervisor-workspace':
+        return <SupervisorWorkspace />;
+      case 'planner-workspace':
+        return <PlannerWorkspace />;
+      case 'engineer-workspace':
+        return <DisciplineEngineerWorkspace />;
+      case 'pm-workspace':
+        return <ProjectManagerWorkspace />;
+      case 'director-workspace':
+        return <ProjectDirectorWorkspace />;
       case 'overview':
         return <OperationsOverviewView />;
       case 'ingestion':
@@ -87,7 +103,7 @@ const AppContent: React.FC = () => {
       case 'settings':
         return <SettingsView />;
       default:
-        return <OperationsOverviewView />;
+        return <PlannerWorkspace />;
     }
   };
 

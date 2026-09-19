@@ -287,9 +287,46 @@ export const LoginView: React.FC = () => {
               <h2 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>
                 Select a Project Persona to Sign In
               </h2>
-              <p style={{ fontSize: '12.5px', color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '12.5px', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
                 Test the planning-to-execution bridge through the distinct perspectives of site supervisors, discipline engineers, planners, or executives.
               </p>
+
+              {/* Role Coordination & Hierarchy Ribbon */}
+              <div style={{
+                background: 'rgba(14, 165, 233, 0.08)',
+                border: '1px solid rgba(14, 165, 233, 0.25)',
+                borderRadius: '8px',
+                padding: '12px 14px',
+                marginBottom: '16px',
+                fontSize: '11.5px',
+                color: 'var(--text-secondary)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#38BDF8' }}>
+                    <Workflow size={14} />
+                    <span>5-Tier FieldLink Hierarchy & Execution Bridge:</span>
+                  </div>
+                  <span style={{ fontSize: '10px', color: 'var(--teal-accent)', background: 'var(--teal-subtle)', padding: '1px 6px', borderRadius: '3px' }}>
+                    Coordinated Flow
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', fontWeight: 600, fontSize: '11px', marginBottom: '6px' }}>
+                  <span style={{ color: '#10B981' }}>L5 Supervisor</span>
+                  <span style={{ color: 'var(--text-muted)' }}>➔</span>
+                  <span style={{ color: '#F59E0B' }}>L4 Discipline Eng</span>
+                  <span style={{ color: 'var(--text-muted)' }}>➔</span>
+                  <span style={{ color: '#0EA5E9' }}>L3 Lead Planner</span>
+                  <span style={{ color: 'var(--text-muted)' }}>➔</span>
+                  <span style={{ color: '#8B5CF6' }}>L2 Project Manager</span>
+                  <span style={{ color: 'var(--text-muted)' }}>➔</span>
+                  <span style={{ color: '#EC4899' }}>L1 Project Director</span>
+                </div>
+
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', lineHeight: 1.35, borderTop: '1px solid rgba(14, 165, 233, 0.15)', paddingTop: '6px' }}>
+                  💡 <strong>Planner ◄► Supervisor Bridge:</strong> The Site Supervisor logs actual progress directly on site via voice or DPR. The Lead Planner receives the live feed, verifies 6-signal confidence, and links actuals into the Primavera P6 schedule.
+                </div>
+              </div>
 
               {/* Persona Cards Grid (L5 down to L1) */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -468,18 +505,51 @@ export const LoginView: React.FC = () => {
                 background: 'rgba(14, 165, 233, 0.08)',
                 border: '1px solid rgba(14, 165, 233, 0.2)',
                 borderRadius: '8px',
-                padding: '10px 14px',
+                padding: '12px 14px',
                 margin: '18px 0 24px 0',
-                fontSize: '11.5px',
-                color: '#BAE6FD',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
+                fontSize: '12px',
+                color: '#BAE6FD'
               }}>
-                <ShieldCheck size={16} color="#38BDF8" style={{ flexShrink: 0 }} />
-                <span>
-                  Authenticating as <strong>{DEMO_USERS[selectedRole].name}</strong> with role <strong>{selectedRole}</strong>.
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                  <div style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    background: DEMO_USERS[selectedRole].avatarColor,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 800,
+                    color: '#0F172A',
+                    fontSize: '12px',
+                    flexShrink: 0
+                  }}>
+                    {DEMO_USERS[selectedRole].name.charAt(0)}
+                  </div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <strong style={{ color: '#fff' }}>{DEMO_USERS[selectedRole].name}</strong>
+                      <span style={{
+                        background: roleMeta[selectedRole].color,
+                        color: '#0F172A',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        padding: '1px 5px',
+                        borderRadius: '3px'
+                      }}>
+                        {roleMeta[selectedRole].levelCode}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '10.5px', color: '#7DD3FC' }}>
+                      {roleMeta[selectedRole].badge}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', borderTop: '1px solid rgba(14, 165, 233, 0.15)', paddingTop: '6px', lineHeight: 1.4 }}>
+                  <div>Target Workspace: <strong style={{ color: roleMeta[selectedRole].color }}>{roleMeta[selectedRole].landingScreen}</strong></div>
+                  <div>Coordination: <strong style={{ color: '#fff' }}>{DEMO_USERS[selectedRole].reportsTo || 'Executive Board'}</strong> (Upstream)</div>
+                </div>
               </div>
 
               {/* Form Inputs */}
@@ -570,7 +640,9 @@ export const LoginView: React.FC = () => {
                   }}
                   disabled={isAuthenticating}
                 >
-                  <span>{isAuthenticating ? 'Validating Credentials...' : 'Authenticate & Enter Gateway'}</span>
+                  <span>
+                    {isAuthenticating ? 'Validating Credentials...' : `Authenticate & Enter ${roleMeta[selectedRole]?.levelCode} Console`}
+                  </span>
                 </button>
               </form>
             </div>

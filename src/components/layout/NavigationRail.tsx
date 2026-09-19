@@ -14,7 +14,12 @@ import {
   Settings,
   Sparkles,
   Workflow,
-  ArrowUpRight
+  ArrowUpRight,
+  HardHat,
+  Wrench,
+  Briefcase,
+  BarChart3,
+  Crown
 } from 'lucide-react';
 
 interface NavItem {
@@ -133,6 +138,52 @@ export const NavigationRail: React.FC = () => {
 
   const userLevel = currentUser.level || 3;
   const primaryForCurrent = rolePrimaryViews[userLevel] || [];
+  const roleWorkspaceConfig: Record<number, {
+    viewId: AppView;
+    title: string;
+    icon: React.ReactNode;
+    color: string;
+    levelCode: string;
+  }> = {
+    5: {
+      viewId: 'supervisor-workspace',
+      title: 'Supervisor Field Console',
+      icon: <HardHat size={17} color="#10B981" />,
+      color: '#10B981',
+      levelCode: 'L5'
+    },
+    4: {
+      viewId: 'engineer-workspace',
+      title: 'Discipline Engineering Console',
+      icon: <Wrench size={17} color="#F59E0B" />,
+      color: '#F59E0B',
+      levelCode: 'L4'
+    },
+    3: {
+      viewId: 'planner-workspace',
+      title: 'Lead Planner Console',
+      icon: <Briefcase size={17} color="#0EA5E9" />,
+      color: '#0EA5E9',
+      levelCode: 'L3'
+    },
+    2: {
+      viewId: 'pm-workspace',
+      title: 'Project Controls Console',
+      icon: <BarChart3 size={17} color="#8B5CF6" />,
+      color: '#8B5CF6',
+      levelCode: 'L2'
+    },
+    1: {
+      viewId: 'director-workspace',
+      title: 'Executive Portfolio Cockpit',
+      icon: <Crown size={17} color="#EC4899" />,
+      color: '#EC4899',
+      levelCode: 'L1'
+    }
+  };
+
+  const currentWorkspace = roleWorkspaceConfig[userLevel] || roleWorkspaceConfig[3];
+  const isWorkspaceActive = activeView === currentWorkspace.viewId;
 
   return (
     <nav style={{
@@ -147,6 +198,74 @@ export const NavigationRail: React.FC = () => {
       overflowY: 'auto'
     }}>
       <div>
+        {/* Top: Active Assigned Role Workspace */}
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            fontSize: '10px',
+            fontWeight: 800,
+            color: 'var(--text-muted)',
+            letterSpacing: '0.9px',
+            padding: '0 10px 6px 10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <span>ASSIGNED ROLE WORKSPACE</span>
+            <span style={{
+              background: currentWorkspace.color,
+              color: '#0F172A',
+              fontSize: '9px',
+              fontWeight: 800,
+              padding: '1px 5px',
+              borderRadius: '3px'
+            }}>
+              {currentWorkspace.levelCode}
+            </span>
+          </div>
+
+          <button
+            onClick={() => setActiveView(currentWorkspace.viewId)}
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontWeight: 700,
+              color: isWorkspaceActive ? '#fff' : 'var(--text-primary)',
+              background: isWorkspaceActive 
+                ? `linear-gradient(135deg, ${currentWorkspace.color}30 0%, ${currentWorkspace.color}15 100%)` 
+                : 'var(--bg-base)',
+              border: `1.5px solid ${isWorkspaceActive ? currentWorkspace.color : 'var(--border-subtle)'}`,
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.15s ease',
+              boxShadow: isWorkspaceActive ? `0 0 12px ${currentWorkspace.color}25` : 'none'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                {currentWorkspace.icon}
+              </span>
+              <span>{currentWorkspace.title}</span>
+            </div>
+
+            <span style={{
+              fontSize: '9px',
+              fontWeight: 800,
+              color: currentWorkspace.color,
+              background: `${currentWorkspace.color}20`,
+              padding: '2px 5px',
+              borderRadius: '4px',
+              border: `1px solid ${currentWorkspace.color}40`
+            }}>
+              LIVE
+            </span>
+          </button>
+        </div>
+
         {groups.map(grp => (
           <div key={grp} style={{ marginBottom: '22px' }}>
             <div style={{

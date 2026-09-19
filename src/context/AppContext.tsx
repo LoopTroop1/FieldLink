@@ -28,6 +28,11 @@ import { PrivacyService } from '../services/privacyService';
 import { ApiService, DatabaseStats } from '../services/apiService';
 
 export type AppView = 
+  | 'supervisor-workspace'
+  | 'planner-workspace'
+  | 'engineer-workspace'
+  | 'pm-workspace'
+  | 'director-workspace'
   | 'overview'
   | 'ingestion'
   | 'extraction'
@@ -41,15 +46,15 @@ export type AppView =
   | 'settings';
 
 const ROLE_INITIAL_VIEW_MAP: Record<UserRole, AppView> = {
-  'L5 Supervisor': 'time-agent',
-  'L4 Discipline Engineer': 'extraction',
-  'L3 Planner': 'review',
-  'L2 Project Manager': 'overview',
-  'L1 Project Director': 'memory',
-  'Supervisor': 'time-agent',
-  'Discipline Engineer': 'extraction',
-  'Planner': 'review',
-  'Project Manager': 'overview'
+  'L5 Supervisor': 'supervisor-workspace',
+  'L4 Discipline Engineer': 'engineer-workspace',
+  'L3 Planner': 'planner-workspace',
+  'L2 Project Manager': 'pm-workspace',
+  'L1 Project Director': 'director-workspace',
+  'Supervisor': 'supervisor-workspace',
+  'Discipline Engineer': 'engineer-workspace',
+  'Planner': 'planner-workspace',
+  'Project Manager': 'pm-workspace'
 };
 
 const INITIAL_ROLE_HANDOFFS: RoleHandoffItem[] = [
@@ -177,8 +182,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Authentication & Session
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const saved = localStorage.getItem('FIELDLINK_AUTH_STATE') ?? localStorage.getItem('OIL_INDIA_AUTH_STATE');
-    return saved !== null ? saved === 'true' : true;
+    const saved = localStorage.getItem('FIELDLINK_AUTH_STATE');
+    return saved === 'true';
   });
 
   const [currentUser, setCurrentUser] = useState<AuthUser>(() => {
@@ -205,7 +210,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  const [activeView, setActiveView] = useState<AppView>('overview');
+  const [activeView, setActiveView] = useState<AppView>(() => {
+    const savedRole = StorageService.loadSettings().currentRole || 'L3 Planner';
+    return ROLE_INITIAL_VIEW_MAP[savedRole] || 'planner-workspace';
+  });
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>('rec-dpr-001');
   const [selectedEventId, setSelectedEventId] = useState<string | null>('ev-001');
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>('act-pip-024a');
