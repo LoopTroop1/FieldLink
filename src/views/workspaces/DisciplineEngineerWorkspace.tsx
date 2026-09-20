@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 export const DisciplineEngineerWorkspace: React.FC = () => {
-  const { currentUser, progressEvents, fieldRecords, switchRole, addRoleHandoff } = useApp();
+  const { currentUser, progressEvents, fieldRecords, addRoleHandoff } = useApp();
   const [activeTab, setActiveTab] = useState<'extraction' | 'linker'>('extraction');
   const [endorsedSuccess, setEndorsedSuccess] = useState(false);
 
@@ -96,48 +96,19 @@ export const DisciplineEngineerWorkspace: React.FC = () => {
               Validates Site Reports Of: <strong>Ramesh Sharma (L5)</strong>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button
-                onClick={() => switchRole('L5 Supervisor')}
-                style={{
-                  background: 'rgba(52, 211, 153, 0.12)',
-                  border: '1px solid rgba(52, 211, 153, 0.35)',
-                  color: '#34D399',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <ArrowLeft size={11} />
-                <span>Supervisor View</span>
-              </button>
-
-              <button
-                onClick={() => switchRole('L3 Planner')}
-                style={{
-                  background: 'rgba(56, 189, 248, 0.12)',
-                  border: '1px solid rgba(56, 189, 248, 0.35)',
-                  color: '#38BDF8',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <span>Planner View (L3)</span>
-                <ArrowRight size={11} />
-              </button>
+            <div style={{ paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <div style={{
+                background: 'rgba(225, 155, 139, 0.1)',
+                border: '1px solid rgba(225, 155, 139, 0.25)',
+                borderRadius: '5px',
+                padding: '5px 10px',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                color: '#E19B8B',
+                textAlign: 'center'
+              }}>
+                Endorsements route to Lead Planner automatically
+              </div>
             </div>
           </div>
         </div>

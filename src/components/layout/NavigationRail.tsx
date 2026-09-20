@@ -13,22 +13,33 @@ import {
   History,
   Settings,
   Sparkles,
-  Workflow,
-  ArrowUpRight,
   HardHat,
   Wrench,
   Briefcase,
   BarChart3,
-  Crown
+  Crown,
+  ClipboardList,
+  Send,
+  FileCheck2,
+  Gauge,
+  ShieldCheck,
+  Layers,
+  AlertTriangle,
+  BarChart,
+  RefreshCcw
 } from 'lucide-react';
 
-interface NavItem {
+interface RoleNavItem {
   id: AppView;
   label: string;
   icon: React.ReactNode;
-  group: 'OPERATIONS' | 'SCHEDULE INTELLIGENCE' | 'INSIGHTS & GOVERNANCE';
   badge?: string | number;
   badgeType?: 'warning' | 'danger' | 'info' | 'neutral' | 'primary';
+}
+
+interface RoleNavGroup {
+  title: string;
+  items: RoleNavItem[];
 }
 
 export const NavigationRail: React.FC = () => {
@@ -37,153 +48,248 @@ export const NavigationRail: React.FC = () => {
     setActiveView, 
     progressEvents, 
     fieldRecords, 
-    currentUser,
-    toggleRoleCoordination
+    currentUser
   } = useApp();
 
-  // Count pending reviews
   const pendingReviewCount = progressEvents.filter(e => e.validationStatus === 'pending').length;
-  const unmatchedCount = progressEvents.filter(e => e.confidenceLevel === 'UNMATCHED').length;
+  const userLevel = currentUser.level || 3;
 
-  const navItems: NavItem[] = [
-    {
-      id: 'overview',
-      label: 'Operations Overview',
-      icon: <LayoutDashboard size={17} />,
-      group: 'OPERATIONS'
-    },
-    {
-      id: 'ingestion',
-      label: 'Data Ingestion Hub',
-      icon: <FileInput size={17} />,
-      group: 'OPERATIONS',
-      badge: fieldRecords.length,
-      badgeType: 'neutral'
-    },
-    {
-      id: 'extraction',
-      label: 'Extraction Workspace',
-      icon: <ScanText size={17} />,
-      group: 'OPERATIONS'
-    },
-    {
-      id: 'linker',
-      label: 'Schedule Linker',
-      icon: <GitMerge size={17} />,
-      group: 'SCHEDULE INTELLIGENCE',
-      badge: '6-Signal',
-      badgeType: 'info'
-    },
-    {
-      id: 'review',
-      label: 'Planner Review Queue',
-      icon: <Inbox size={17} />,
-      group: 'SCHEDULE INTELLIGENCE',
-      badge: pendingReviewCount > 0 ? pendingReviewCount : undefined,
-      badgeType: unmatchedCount > 0 ? 'danger' : 'warning'
-    },
-    {
-      id: 'time-agent',
-      label: 'Time Agent (Supervisor)',
-      icon: <Bot size={17} />,
-      group: 'SCHEDULE INTELLIGENCE',
-      badge: 'Live',
-      badgeType: 'info'
-    },
-    {
-      id: 'schedule',
-      label: 'Live Schedule & Gantt',
-      icon: <CalendarDays size={17} />,
-      group: 'SCHEDULE INTELLIGENCE'
-    },
-    {
-      id: 'analytics',
-      label: 'Analytics & Forecast',
-      icon: <LineChart size={17} />,
-      group: 'INSIGHTS & GOVERNANCE'
-    },
-    {
-      id: 'memory',
-      label: 'Project Memory',
-      icon: <Brain size={17} />,
-      group: 'INSIGHTS & GOVERNANCE'
-    },
-    {
-      id: 'audit',
-      label: 'Append-Only Audit Trail',
-      icon: <History size={17} />,
-      group: 'INSIGHTS & GOVERNANCE'
-    },
-    {
-      id: 'settings',
-      label: 'Settings & Dictionary',
-      icon: <Settings size={17} />,
-      group: 'INSIGHTS & GOVERNANCE'
+  // ============================================================
+  // STRICT ROLE-BASED NAV ITEMS -- each role sees ONLY its items
+  // ============================================================
+  const getRoleNavGroups = (): RoleNavGroup[] => {
+    switch (userLevel) {
+      case 5: // L5 Supervisor
+        return [
+          {
+            title: 'FIELD EXECUTION',
+            items: [
+              {
+                id: 'supervisor-workspace',
+                label: 'My Field Console',
+                icon: <HardHat size={17} />,
+                badge: 'Live',
+                badgeType: 'info'
+              },
+              {
+                id: 'time-agent',
+                label: 'Voice & Time Agent',
+                icon: <Bot size={17} />,
+                badge: 'Active',
+                badgeType: 'info'
+              },
+              {
+                id: 'ingestion',
+                label: 'Submit Shift DPR',
+                icon: <Send size={17} />,
+                badge: fieldRecords.length,
+                badgeType: 'neutral'
+              }
+            ]
+          },
+          {
+            title: 'MY SUBMISSIONS',
+            items: [
+              {
+                id: 'review',
+                label: 'Submission Status',
+                icon: <FileCheck2 size={17} />,
+                badge: pendingReviewCount > 0 ? pendingReviewCount : undefined,
+                badgeType: 'warning'
+              }
+            ]
+          }
+        ];
+
+      case 4: // L4 Discipline Engineer
+        return [
+          {
+            title: 'ENGINEERING CONSOLE',
+            items: [
+              {
+                id: 'engineer-workspace',
+                label: 'My Engineering Console',
+                icon: <Wrench size={17} />,
+                badge: 'Live',
+                badgeType: 'info'
+              },
+              {
+                id: 'extraction',
+                label: 'Extraction & Validation',
+                icon: <ScanText size={17} />
+              },
+              {
+                id: 'ingestion',
+                label: 'Incoming Field Data',
+                icon: <FileInput size={17} />,
+                badge: fieldRecords.length,
+                badgeType: 'neutral'
+              }
+            ]
+          },
+          {
+            title: 'TECHNICAL REVIEW',
+            items: [
+              {
+                id: 'review',
+                label: 'Endorsement Queue',
+                icon: <ShieldCheck size={17} />,
+                badge: pendingReviewCount > 0 ? pendingReviewCount : undefined,
+                badgeType: 'warning'
+              }
+            ]
+          }
+        ];
+
+      case 3: // L3 Lead Planner
+        return [
+          {
+            title: 'PLANNING CONSOLE',
+            items: [
+              {
+                id: 'planner-workspace',
+                label: 'My Planning Console',
+                icon: <Briefcase size={17} />,
+                badge: 'Live',
+                badgeType: 'info'
+              },
+              {
+                id: 'review',
+                label: 'Incoming Supervisor Feed',
+                icon: <Inbox size={17} />,
+                badge: pendingReviewCount > 0 ? pendingReviewCount : undefined,
+                badgeType: pendingReviewCount > 0 ? 'danger' : 'neutral'
+              },
+              {
+                id: 'linker',
+                label: '6-Signal Schedule Linker',
+                icon: <GitMerge size={17} />,
+                badge: '6-Signal',
+                badgeType: 'info'
+              }
+            ]
+          },
+          {
+            title: 'SCHEDULE VIEWS',
+            items: [
+              {
+                id: 'schedule',
+                label: 'Level 5/6 Gantt Chart',
+                icon: <CalendarDays size={17} />
+              },
+              {
+                id: 'extraction',
+                label: 'Extraction Workspace',
+                icon: <ScanText size={17} />
+              }
+            ]
+          }
+        ];
+
+      case 2: // L2 Project Controls Manager
+        return [
+          {
+            title: 'CONTROLS CONSOLE',
+            items: [
+              {
+                id: 'pm-workspace',
+                label: 'My Controls Console',
+                icon: <BarChart3 size={17} />,
+                badge: 'Live',
+                badgeType: 'info'
+              },
+              {
+                id: 'overview',
+                label: 'Operations Overview & EVM',
+                icon: <LayoutDashboard size={17} />
+              },
+              {
+                id: 'analytics',
+                label: 'S-Curves & What-If',
+                icon: <LineChart size={17} />
+              }
+            ]
+          },
+          {
+            title: 'GOVERNANCE',
+            items: [
+              {
+                id: 'schedule',
+                label: 'P6 PMIS Sync Gateway',
+                icon: <RefreshCcw size={17} />
+              },
+              {
+                id: 'audit',
+                label: 'Audit Trail',
+                icon: <History size={17} />
+              }
+            ]
+          }
+        ];
+
+      case 1: // L1 Executive Project Director
+        return [
+          {
+            title: 'EXECUTIVE COCKPIT',
+            items: [
+              {
+                id: 'director-workspace',
+                label: 'My Executive Cockpit',
+                icon: <Crown size={17} />,
+                badge: 'Live',
+                badgeType: 'info'
+              },
+              {
+                id: 'overview',
+                label: 'Portfolio Overview',
+                icon: <Gauge size={17} />
+              },
+              {
+                id: 'memory',
+                label: 'Project Memory & Benchmarks',
+                icon: <Brain size={17} />
+              }
+            ]
+          },
+          {
+            title: 'GOVERNANCE',
+            items: [
+              {
+                id: 'analytics',
+                label: 'Program Analytics',
+                icon: <LineChart size={17} />
+              },
+              {
+                id: 'audit',
+                label: 'Audit Trail',
+                icon: <History size={17} />
+              }
+            ]
+          }
+        ];
+
+      default:
+        return [];
     }
-  ];
-
-  const groups: Array<'OPERATIONS' | 'SCHEDULE INTELLIGENCE' | 'INSIGHTS & GOVERNANCE'> = [
-    'OPERATIONS',
-    'SCHEDULE INTELLIGENCE',
-    'INSIGHTS & GOVERNANCE'
-  ];
-
-  const rolePrimaryViews: Record<number, AppView[]> = {
-    5: ['time-agent', 'ingestion'],
-    4: ['extraction', 'linker'],
-    3: ['review', 'linker', 'schedule'],
-    2: ['overview', 'analytics', 'audit'],
-    1: ['memory', 'overview', 'analytics']
   };
 
-  const userLevel = currentUser.level || 3;
-  const primaryForCurrent = rolePrimaryViews[userLevel] || [];
-  const roleWorkspaceConfig: Record<number, {
-    viewId: AppView;
+  const navGroups = getRoleNavGroups();
+
+  // Role workspace config for the hero card at the top
+  const roleConfig: Record<number, {
     title: string;
-    icon: React.ReactNode;
+    subtitle: string;
     color: string;
     levelCode: string;
   }> = {
-    5: {
-      viewId: 'supervisor-workspace',
-      title: 'Supervisor Field Console',
-      icon: <HardHat size={17} color="#10B981" />,
-      color: '#10B981',
-      levelCode: 'L5'
-    },
-    4: {
-      viewId: 'engineer-workspace',
-      title: 'Discipline Engineering Console',
-      icon: <Wrench size={17} color="#F59E0B" />,
-      color: '#F59E0B',
-      levelCode: 'L4'
-    },
-    3: {
-      viewId: 'planner-workspace',
-      title: 'Lead Planner Console',
-      icon: <Briefcase size={17} color="#0EA5E9" />,
-      color: '#0EA5E9',
-      levelCode: 'L3'
-    },
-    2: {
-      viewId: 'pm-workspace',
-      title: 'Project Controls Console',
-      icon: <BarChart3 size={17} color="#8B5CF6" />,
-      color: '#8B5CF6',
-      levelCode: 'L2'
-    },
-    1: {
-      viewId: 'director-workspace',
-      title: 'Executive Portfolio Cockpit',
-      icon: <Crown size={17} color="#EC4899" />,
-      color: '#EC4899',
-      levelCode: 'L1'
-    }
+    5: { title: 'Supervisor', subtitle: 'Frontline Execution', color: '#D41414', levelCode: 'L5' },
+    4: { title: 'Discipline Engineer', subtitle: 'Technical Validation', color: '#E19B8B', levelCode: 'L4' },
+    3: { title: 'Lead Planner', subtitle: 'Schedule Intelligence', color: '#6C3AED', levelCode: 'L3' },
+    2: { title: 'Project Controls', subtitle: 'Earned Value & Sync', color: '#8B5CF6', levelCode: 'L2' },
+    1: { title: 'Project Director', subtitle: 'Executive Governance', color: '#310A69', levelCode: 'L1' }
   };
 
-  const currentWorkspace = roleWorkspaceConfig[userLevel] || roleWorkspaceConfig[3];
-  const isWorkspaceActive = activeView === currentWorkspace.viewId;
+  const config = roleConfig[userLevel] || roleConfig[3];
 
   return (
     <nav style={{
@@ -198,90 +304,89 @@ export const NavigationRail: React.FC = () => {
       overflowY: 'auto'
     }}>
       <div>
-        {/* Top: Active Assigned Role Workspace */}
-        <div style={{ marginBottom: '20px' }}>
+        {/* Role Identity Card */}
+        <div style={{ marginBottom: '24px' }}>
           <div style={{
-            fontSize: '10px',
-            fontWeight: 800,
-            color: 'var(--text-muted)',
-            letterSpacing: '0.9px',
-            padding: '0 10px 6px 10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            background: `linear-gradient(135deg, ${config.color}18 0%, ${config.color}08 100%)`,
+            border: `1.5px solid ${config.color}40`,
+            borderRadius: '10px',
+            padding: '14px 14px',
+            position: 'relative',
+            overflow: 'hidden'
           }}>
-            <span>ASSIGNED ROLE WORKSPACE</span>
-            <span style={{
-              background: currentWorkspace.color,
-              color: '#0F172A',
-              fontSize: '9px',
-              fontWeight: 800,
-              padding: '1px 5px',
-              borderRadius: '3px'
-            }}>
-              {currentWorkspace.levelCode}
-            </span>
-          </div>
+            {/* Decorative gradient line */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '2px',
+              background: 'var(--brand-gradient)'
+            }} />
 
-          <button
-            onClick={() => setActiveView(currentWorkspace.viewId)}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              fontSize: '13px',
-              fontWeight: 700,
-              color: isWorkspaceActive ? '#fff' : 'var(--text-primary)',
-              background: isWorkspaceActive 
-                ? `linear-gradient(135deg, ${currentWorkspace.color}30 0%, ${currentWorkspace.color}15 100%)` 
-                : 'var(--bg-base)',
-              border: `1.5px solid ${isWorkspaceActive ? currentWorkspace.color : 'var(--border-subtle)'}`,
-              cursor: 'pointer',
-              textAlign: 'left',
-              transition: 'all 0.15s ease',
-              boxShadow: isWorkspaceActive ? `0 0 12px ${currentWorkspace.color}25` : 'none'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>
-                {currentWorkspace.icon}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{
+                fontSize: '9.5px',
+                fontWeight: 800,
+                letterSpacing: '1px',
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase'
+              }}>
+                ACTIVE ROLE
               </span>
-              <span>{currentWorkspace.title}</span>
+              <span style={{
+                background: config.color,
+                color: '#FFFFFF',
+                fontSize: '9px',
+                fontWeight: 800,
+                padding: '2px 6px',
+                borderRadius: '4px'
+              }}>
+                {config.levelCode}
+              </span>
             </div>
 
-            <span style={{
-              fontSize: '9px',
-              fontWeight: 800,
-              color: currentWorkspace.color,
-              background: `${currentWorkspace.color}20`,
-              padding: '2px 5px',
-              borderRadius: '4px',
-              border: `1px solid ${currentWorkspace.color}40`
-            }}>
-              LIVE
-            </span>
-          </button>
+            <div style={{ fontWeight: 800, fontSize: '14px', color: 'var(--text-primary)', marginBottom: '2px' }}>
+              {currentUser.name}
+            </div>
+            <div style={{ fontSize: '11px', color: config.color, fontWeight: 600 }}>
+              {config.title}
+            </div>
+            <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+              {config.subtitle}
+            </div>
+
+            {currentUser.reportsTo && (
+              <div style={{
+                marginTop: '8px',
+                paddingTop: '8px',
+                borderTop: `1px solid ${config.color}20`,
+                fontSize: '10.5px',
+                color: 'var(--text-secondary)'
+              }}>
+                Reports to: <strong style={{ color: 'var(--text-primary)' }}>{currentUser.reportsTo}</strong>
+              </div>
+            )}
+          </div>
         </div>
 
-        {groups.map(grp => (
-          <div key={grp} style={{ marginBottom: '22px' }}>
+        {/* Role-Specific Navigation Groups */}
+        {navGroups.map(group => (
+          <div key={group.title} style={{ marginBottom: '22px' }}>
             <div style={{
-              fontSize: '10.5px',
-              fontWeight: 700,
+              fontSize: '10px',
+              fontWeight: 800,
               color: 'var(--text-muted)',
-              letterSpacing: '0.9px',
-              padding: '0 10px 8px 10px'
+              letterSpacing: '1px',
+              padding: '0 10px 8px 10px',
+              textTransform: 'uppercase'
             }}>
-              {grp}
+              {group.title}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              {navItems.filter(i => i.group === grp).map(item => {
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {group.items.map(item => {
                 const isActive = activeView === item.id;
-                const isPrimaryForRole = primaryForCurrent.includes(item.id);
 
                 return (
                   <button
@@ -291,23 +396,23 @@ export const NavigationRail: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '8px 12px',
+                      padding: '9px 12px',
                       borderRadius: 'var(--btn-radius)',
                       fontSize: '12.5px',
-                      fontWeight: isActive ? 600 : (isPrimaryForRole ? 600 : 500),
+                      fontWeight: isActive ? 700 : 500,
                       color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                      background: isActive 
-                        ? 'var(--teal-subtle)' 
-                        : (isPrimaryForRole ? 'rgba(14, 165, 233, 0.04)' : 'transparent'),
-                      borderLeft: isActive 
-                        ? '3px solid var(--teal-accent)' 
-                        : (isPrimaryForRole ? '3px solid rgba(14, 165, 233, 0.4)' : '3px solid transparent'),
+                      background: isActive
+                        ? 'var(--accent-primary-subtle)'
+                        : 'transparent',
+                      borderLeft: isActive
+                        ? '3px solid var(--accent-primary)'
+                        : '3px solid transparent',
                       borderTop: '1px solid transparent',
                       borderRight: '1px solid transparent',
                       borderBottom: '1px solid transparent',
                       cursor: 'pointer',
                       textAlign: 'left',
-                      transition: 'background 0.12s ease, color 0.12s ease'
+                      transition: 'all 0.12s ease'
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
@@ -317,14 +422,14 @@ export const NavigationRail: React.FC = () => {
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.background = isPrimaryForRole ? 'rgba(14, 165, 233, 0.04)' : 'transparent';
+                        e.currentTarget.style.background = 'transparent';
                         e.currentTarget.style.color = 'var(--text-secondary)';
                       }
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ 
-                        color: isActive ? 'var(--teal-accent)' : (isPrimaryForRole ? 'var(--teal-accent)' : 'var(--text-muted)'),
+                      <span style={{
+                        color: isActive ? 'var(--accent-primary)' : 'var(--text-muted)',
                         display: 'flex',
                         alignItems: 'center'
                       }}>
@@ -333,26 +438,11 @@ export const NavigationRail: React.FC = () => {
                       <span>{item.label}</span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      {isPrimaryForRole && !item.badge && (
-                        <span style={{
-                          fontSize: '9px',
-                          fontWeight: 700,
-                          color: 'var(--teal-accent)',
-                          background: 'var(--teal-subtle)',
-                          padding: '1px 5px',
-                          borderRadius: '3px'
-                        }}>
-                          L{userLevel}
-                        </span>
-                      )}
-
-                      {item.badge !== undefined && (
-                        <span className={`badge badge-${item.badgeType || 'neutral'}`} style={{ fontSize: '10px', padding: '2px 6px' }}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </div>
+                    {item.badge !== undefined && (
+                      <span className={`badge badge-${item.badgeType || 'neutral'}`} style={{ fontSize: '10px', padding: '2px 6px' }}>
+                        {item.badge}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -361,57 +451,30 @@ export const NavigationRail: React.FC = () => {
         ))}
       </div>
 
-      {/* Role Coordination & Status Footer */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {/* Active Role Hierarchy Card */}
-        <div style={{
-          background: 'var(--bg-base)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--btn-radius)',
-          padding: '10px 12px',
-          fontSize: '11px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-            <span style={{
-              fontSize: '9.5px',
-              fontWeight: 800,
-              background: 'var(--teal-accent)',
-              padding: '1px 5px',
-              borderRadius: '3px',
-              color: '#0F172A'
-            }}>
-              L{userLevel} Persona
-            </span>
-            <button
-              onClick={toggleRoleCoordination}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--teal-accent)',
-                cursor: 'pointer',
-                fontSize: '10.5px',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '2px',
-                padding: 0
-              }}
-              title="Toggle L1-L5 Role Pipeline"
-            >
-              <Workflow size={11} />
-              <span>Pipeline</span>
-            </button>
-          </div>
+      {/* Footer: Settings + Engine Status */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <button
+          onClick={() => setActiveView('settings')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '9px 12px',
+            borderRadius: 'var(--btn-radius)',
+            fontSize: '12px',
+            fontWeight: 500,
+            color: activeView === 'settings' ? 'var(--text-primary)' : 'var(--text-muted)',
+            background: activeView === 'settings' ? 'var(--accent-primary-subtle)' : 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'left',
+            width: '100%'
+          }}
+        >
+          <Settings size={15} />
+          <span>Settings & Dictionary</span>
+        </button>
 
-          <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '2px' }}>
-            {currentUser.name}
-          </div>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '10.5px', lineHeight: 1.3 }}>
-            Reports to: <strong style={{ color: '#38BDF8' }}>{currentUser.reportsTo || 'Executive Board'}</strong>
-          </div>
-        </div>
-
-        {/* Deterministic Matching Engine Card */}
         <div style={{
           background: 'var(--bg-base)',
           border: '1px solid var(--border-subtle)',
@@ -420,7 +483,7 @@ export const NavigationRail: React.FC = () => {
           fontSize: '11px',
           color: 'var(--text-secondary)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--teal-accent)', fontWeight: 700, marginBottom: '2px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)', fontWeight: 700, marginBottom: '2px' }}>
             <Sparkles size={13} />
             <span>Deterministic Engine</span>
           </div>

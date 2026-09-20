@@ -26,7 +26,6 @@ export const PlannerWorkspace: React.FC = () => {
     currentUser, 
     progressEvents, 
     activities, 
-    switchRole, 
     addRoleHandoff,
     approveCandidateMatch,
     selectedEventId
@@ -127,48 +126,19 @@ export const PlannerWorkspace: React.FC = () => {
               <strong style={{ color: '#A78BFA' }}>PM S. Banerjee (L2)</strong>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button
-                onClick={() => switchRole('L5 Supervisor')}
-                style={{
-                  background: 'rgba(52, 211, 153, 0.12)',
-                  border: '1px solid rgba(52, 211, 153, 0.35)',
-                  color: '#34D399',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <ArrowLeft size={11} />
-                <span>Supervisor View</span>
-              </button>
-
-              <button
-                onClick={() => switchRole('L2 Project Manager')}
-                style={{
-                  background: 'rgba(167, 139, 250, 0.12)',
-                  border: '1px solid rgba(167, 139, 250, 0.35)',
-                  color: '#A78BFA',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <span>PM View (L2)</span>
-                <ArrowRight size={11} />
-              </button>
+            <div style={{ paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <div style={{
+                background: 'rgba(108, 58, 237, 0.1)',
+                border: '1px solid rgba(108, 58, 237, 0.25)',
+                borderRadius: '5px',
+                padding: '5px 10px',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                color: '#A78BFA',
+                textAlign: 'center'
+              }}>
+                Validated actuals sync upstream to PM S. Banerjee
+              </div>
             </div>
           </div>
         </div>

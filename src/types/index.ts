@@ -118,6 +118,175 @@ export interface RoleHandoffItem {
   note?: string;
 }
 
+export interface AssignedTask {
+  id: string;
+  role: UserRole;
+  title: string;
+  description: string;
+  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+  dueTime: string;
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+  actionLabel: string;
+  targetView: string;
+  connectionNote?: string;
+}
+
+export const INITIAL_ASSIGNED_TASKS: AssignedTask[] = [
+  // L5 Field Supervisor Tasks
+  {
+    id: 'task-sup-01',
+    role: 'L5 Supervisor',
+    title: 'Log Day Shift Progress on Line 24-XX Segment B',
+    description: 'Weld and fit-up remaining 6 joints before 18:00 status cutoff. Record physical counts.',
+    priority: 'CRITICAL',
+    dueTime: 'Today, 18:00',
+    status: 'IN_PROGRESS',
+    actionLabel: 'Open Voice Logger',
+    targetView: 'supervisor-workspace',
+    connectionNote: 'Submits directly to Lead Planner Rajiv Sen (L3)'
+  },
+  {
+    id: 'task-sup-02',
+    role: 'L5 Supervisor',
+    title: 'Pump P-101 Baseplate Epoxy Grouting',
+    description: 'Submit physical quantity curing log and grout test specimen serial number.',
+    priority: 'HIGH',
+    dueTime: 'Today, 16:30',
+    status: 'PENDING',
+    actionLabel: 'Submit Grout Log',
+    targetView: 'supervisor-workspace',
+    connectionNote: 'Requires technical endorsement by Eng. Vikram Patel (L4)'
+  },
+  {
+    id: 'task-sup-03',
+    role: 'L5 Supervisor',
+    title: 'Area B Underground Piping Shift Handover',
+    description: 'Conduct safety toolbox talk and log joint fit-up summary for incoming night shift crew.',
+    priority: 'MEDIUM',
+    dueTime: 'Today, 19:00',
+    status: 'PENDING',
+    actionLabel: 'Submit Shift DPR',
+    targetView: 'supervisor-workspace',
+    connectionNote: 'Mandatory frontline shift handover protocol'
+  },
+
+  // L4 Discipline Engineer Tasks
+  {
+    id: 'task-eng-01',
+    role: 'L4 Discipline Engineer',
+    title: 'Verify P&ID-2401 Drawing Specs on Line 24-XX',
+    description: 'Cross-check Ramesh Sharma\'s 18-joint field progress against drawing revision C-04.',
+    priority: 'HIGH',
+    dueTime: 'Today, 15:00',
+    status: 'PENDING',
+    actionLabel: 'Endorse Drawing Specs',
+    targetView: 'engineer-workspace',
+    connectionNote: 'Validates site DPR for Lead Planner Rajiv Sen (L3)'
+  },
+  {
+    id: 'task-eng-02',
+    role: 'L4 Discipline Engineer',
+    title: 'Review Cable Tray Linear Quantity Pull (42m)',
+    description: 'Validate unit-of-measure (meters vs runs) and verify cable schedule tag routing.',
+    priority: 'MEDIUM',
+    dueTime: 'Today, 17:00',
+    status: 'PENDING',
+    actionLabel: 'Inspect Quantity',
+    targetView: 'engineer-workspace',
+    connectionNote: 'Electrical discipline technical clearance'
+  },
+
+  // L3 Lead Planning Engineer Tasks
+  {
+    id: 'task-pln-01',
+    role: 'L3 Planner',
+    title: '6-Signal Match on Supervisor Ramesh Sharma\'s DPR',
+    description: 'Match incoming 18-joint field submission to Level 6 Activity PIP-L6-024A (94.8% confidence).',
+    priority: 'CRITICAL',
+    dueTime: 'Today, 15:30',
+    status: 'PENDING',
+    actionLabel: 'Run 6-Signal Match',
+    targetView: 'planner-workspace',
+    connectionNote: 'Direct feed from Site Supervisor Ramesh Sharma (L5)'
+  },
+  {
+    id: 'task-pln-02',
+    role: 'L3 Planner',
+    title: 'Review Predecessor Safety Gate on Activity PIP-L6-024A',
+    description: 'Predecessor CIV-L5-01 is at 50%. Review safety waiver before permitting schedule mutation.',
+    priority: 'HIGH',
+    dueTime: 'Today, 16:00',
+    status: 'PENDING',
+    actionLabel: 'Review Safety Waiver',
+    targetView: 'planner-workspace',
+    connectionNote: 'Out-of-sequence safety protocol'
+  },
+  {
+    id: 'task-pln-03',
+    role: 'L3 Planner',
+    title: 'Execute 1:N Split on Bulk Piping Contractor Invoice',
+    description: 'Partition 100% reported progress across 3 discrete Level 6 activities.',
+    priority: 'MEDIUM',
+    dueTime: 'Tomorrow, 10:00',
+    status: 'PENDING',
+    actionLabel: 'Execute 1:N Split',
+    targetView: 'planner-workspace',
+    connectionNote: 'Feeds P6 synchronization payload for PM S. Banerjee'
+  },
+
+  // L2 Project Controls Manager Tasks
+  {
+    id: 'task-pm-01',
+    role: 'L2 Project Manager',
+    title: 'Authorize Oracle Primavera P6 PMIS Sync Payload',
+    description: 'Authorize sync transaction TX-DEMO-864607 submitted by Lead Planner Rajiv Sen.',
+    priority: 'CRITICAL',
+    dueTime: 'Today, 17:30',
+    status: 'PENDING',
+    actionLabel: 'Authorize P6 Sync',
+    targetView: 'pm-workspace',
+    connectionNote: 'Submitted by Lead Planner Rajiv Sen (L3)'
+  },
+  {
+    id: 'task-pm-02',
+    role: 'L2 Project Manager',
+    title: 'Run What-If Delay Ripple Simulation on Static Equip',
+    description: 'Simulate +5 days delivery variance on critical path separator vessel without touching baseline.',
+    priority: 'HIGH',
+    dueTime: 'Today, 18:00',
+    status: 'PENDING',
+    actionLabel: 'Run Simulation',
+    targetView: 'pm-workspace',
+    connectionNote: 'Reports forecast variance to Director Dr. Roy (L1)'
+  },
+
+  // L1 Executive Project Director Tasks
+  {
+    id: 'task-dir-01',
+    role: 'L1 Project Director',
+    title: 'Review Q4 Baghewala Macro Milestone Commitments',
+    description: 'Evaluate Level 1/2 project milestone commitments and review contractor variance claims.',
+    priority: 'HIGH',
+    dueTime: 'Today, 18:30',
+    status: 'PENDING',
+    actionLabel: 'Review Milestones',
+    targetView: 'director-workspace',
+    connectionNote: 'Executive Board Governance'
+  },
+  {
+    id: 'task-dir-02',
+    role: 'L1 Project Director',
+    title: 'Adopt Empirical Duration Overrun Benchmark (+2.4d)',
+    description: 'Adopt historical piping delay pattern into future corporate planning baselines.',
+    priority: 'MEDIUM',
+    dueTime: 'Tomorrow, 12:00',
+    status: 'PENDING',
+    actionLabel: 'Adopt Benchmark',
+    targetView: 'director-workspace',
+    connectionNote: 'Institutional Project Memory'
+  }
+];
+
 export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L5 Supervisor': {
     id: 'user-supervisor',

@@ -1,17 +1,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { UserRole } from '../../types';
 import { 
   Calendar, 
-  Shield, 
   RotateCcw, 
-  UserCheck, 
   Layers, 
   PlayCircle,
-  Eye,
-  EyeOff,
   LogOut,
-  User,
   Sun,
   Moon,
   Workflow
@@ -21,25 +15,25 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
   const { 
     project, 
     settings, 
-    setRole, 
-    togglePrivacyMode, 
-    resetAllData, 
     currentUser,
     logout,
     theme,
     toggleTheme,
     isRoleCoordinationOpen,
     toggleRoleCoordination,
-    roleHandoffs
+    roleHandoffs,
+    resetAllData
   } = useApp();
 
-  const roles: UserRole[] = [
-    'L5 Supervisor',
-    'L4 Discipline Engineer',
-    'L3 Planner',
-    'L2 Project Manager',
-    'L1 Project Director'
-  ];
+  const levelColors: Record<number, string> = {
+    5: '#D41414',
+    4: '#E19B8B',
+    3: '#6C3AED',
+    2: '#8B5CF6',
+    1: '#310A69'
+  };
+
+  const levelColor = levelColors[currentUser.level || 3] || '#6C3AED';
 
   return (
     <header style={{
@@ -52,25 +46,37 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
       justifyContent: 'space-between',
       padding: '0 24px',
       zIndex: 50,
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)'
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+      position: 'relative'
     }}>
+      {/* Decorative brand gradient line at bottom */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '2px',
+        background: 'var(--brand-gradient)',
+        opacity: 0.6
+      }} />
+
       {/* Left: Project Branding & Identity */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <div style={{
-          background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
+          background: 'linear-gradient(135deg, #D41414 0%, #310A69 100%)',
           color: '#fff',
-          padding: '5px 11px',
-          borderRadius: '7px',
+          padding: '5px 12px',
+          borderRadius: '8px',
           fontSize: '11px',
           fontWeight: 800,
-          letterSpacing: '0.8px',
+          letterSpacing: '1px',
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
-          boxShadow: '0 2px 8px rgba(2, 132, 199, 0.35)',
-          border: '1px solid rgba(255, 255, 255, 0.15)'
+          boxShadow: '0 2px 12px rgba(212, 20, 20, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.12)'
         }}>
-          <Layers size={14} color="#38BDF8" />
+          <Layers size={14} color="#E19B8B" />
           <span>FIELDLINK</span>
         </div>
 
@@ -84,7 +90,7 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
         </div>
       </div>
 
-      {/* Right: Engineering Controls & Actions */}
+      {/* Right: Controls & User */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         {/* Light / Dark Mode Toggle */}
         <button
@@ -99,7 +105,7 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           }}
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
         >
-          {theme === 'dark' ? <Sun size={13} color="#FBBF24" /> : <Moon size={13} color="#0284C7" />}
+          {theme === 'dark' ? <Sun size={13} color="#FBBF24" /> : <Moon size={13} color="#6C3AED" />}
           <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
         </button>
 
@@ -110,20 +116,20 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           style={{
             padding: '5px 11px',
             fontSize: '12px',
-            borderColor: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--border-subtle)',
-            background: isRoleCoordinationOpen ? 'var(--teal-subtle)' : 'transparent',
-            color: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--text-secondary)',
+            borderColor: isRoleCoordinationOpen ? 'var(--accent-primary)' : 'var(--border-subtle)',
+            background: isRoleCoordinationOpen ? 'var(--accent-primary-subtle)' : 'transparent',
+            color: isRoleCoordinationOpen ? 'var(--accent-primary)' : 'var(--text-secondary)',
             display: 'flex',
             alignItems: 'center',
             gap: '6px'
           }}
           title="Toggle 5-Tier Role Coordination Pipeline (L1 - L5)"
         >
-          <Workflow size={13} color={isRoleCoordinationOpen ? 'var(--teal-accent)' : 'currentColor'} />
-          <span>Hierarchy (L1–L5)</span>
+          <Workflow size={13} color={isRoleCoordinationOpen ? 'var(--accent-primary)' : 'currentColor'} />
+          <span>Hierarchy (L1-L5)</span>
           <span style={{
-            background: isRoleCoordinationOpen ? 'var(--teal-accent)' : 'var(--border-subtle)',
-            color: isRoleCoordinationOpen ? '#0F172A' : 'var(--text-secondary)',
+            background: isRoleCoordinationOpen ? 'var(--accent-primary)' : 'var(--border-subtle)',
+            color: isRoleCoordinationOpen ? '#FFFFFF' : 'var(--text-secondary)',
             fontSize: '9.5px',
             fontWeight: 800,
             padding: '1px 5px',
@@ -141,7 +147,7 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           title="Run 5-Act Judge Walkthrough"
         >
           <PlayCircle size={15} />
-          <span>Guided Demo (4m)</span>
+          <span>Guided Demo</span>
         </button>
 
         {/* Data Date Cutoff Pill */}
@@ -156,50 +162,17 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           fontSize: '12px',
           color: 'var(--text-secondary)'
         }}>
-          <Calendar size={13} color="var(--teal-accent)" />
+          <Calendar size={13} color="var(--accent-primary)" />
           <span>Cutoff:</span>
           <strong style={{ color: 'var(--text-primary)', fontFamily: 'monospace' }}>{settings.dataDate}</strong>
         </div>
-
-        {/* Active Role Selector (L1 - L5) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <select
-            value={settings.currentRole}
-            onChange={(e) => setRole(e.target.value as UserRole)}
-            className="input-field"
-            style={{ width: 'auto', padding: '5px 10px', fontSize: '12px', cursor: 'pointer', borderRadius: 'var(--btn-radius)', fontWeight: 600 }}
-          >
-            {roles.map(r => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Privacy Redaction Toggle */}
-        <button
-          onClick={togglePrivacyMode}
-          className="btn btn-secondary"
-          style={{
-            padding: '5px 11px',
-            fontSize: '12px',
-            borderColor: settings.privacyMode ? 'rgba(16, 185, 129, 0.5)' : 'var(--border-subtle)',
-            color: settings.privacyMode ? 'var(--oil-green)' : 'var(--text-secondary)',
-            background: settings.privacyMode ? 'var(--success-bg)' : 'transparent'
-          }}
-          title="Mask worker and contractor names"
-        >
-          {settings.privacyMode ? <EyeOff size={13} /> : <Eye size={13} />}
-          <span>Privacy: {settings.privacyMode ? 'ON' : 'OFF'}</span>
-        </button>
 
         {/* Reset Demo Button */}
         <button
           onClick={resetAllData}
           className="btn btn-secondary"
           style={{ padding: '5px 11px', fontSize: '12px', color: '#EF4444', borderColor: 'rgba(239, 68, 68, 0.3)' }}
-          title="Instant reset to pure Baghewala synthetic baseline"
+          title="Instant reset to pure baseline"
         >
           <RotateCcw size={13} />
           <span>Reset</span>
@@ -221,16 +194,17 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
           title={`Reports to: ${currentUser.reportsTo || 'N/A'} | Supervises: ${currentUser.supervises || 'N/A'}`}
         >
           <div style={{
-            width: '24px',
-            height: '24px',
+            width: '26px',
+            height: '26px',
             borderRadius: '50%',
-            background: currentUser.avatarColor,
+            background: `linear-gradient(135deg, ${levelColor} 0%, ${levelColor}90 100%)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '11px',
             fontWeight: 800,
-            color: '#0F172A'
+            color: '#FFFFFF',
+            boxShadow: `0 0 8px ${levelColor}40`
           }}>
             {currentUser.name.charAt(0)}
           </div>
@@ -240,9 +214,9 @@ export const TopBar: React.FC<{ onStartGuidedDemo: () => void }> = ({ onStartGui
               <span style={{
                 fontSize: '9px',
                 fontWeight: 800,
-                color: 'var(--teal-accent)',
-                background: 'var(--teal-subtle)',
-                padding: '0 4px',
+                color: '#FFFFFF',
+                background: levelColor,
+                padding: '0 5px',
                 borderRadius: '3px'
               }}>
                 L{currentUser.level || 3}

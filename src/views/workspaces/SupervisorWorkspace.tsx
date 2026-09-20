@@ -26,8 +26,7 @@ export const SupervisorWorkspace: React.FC = () => {
     fieldRecords, 
     ingestNewRecord, 
     addRoleHandoff,
-    setActiveView,
-    switchRole
+    setActiveView
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<'agent' | 'dpr-submit' | 'status' | 'ingestion'>('agent');
@@ -139,27 +138,18 @@ export const SupervisorWorkspace: React.FC = () => {
               <strong style={{ color: '#F59E0B' }}>Vikram Patel (L4 Eng)</strong>
             </div>
             <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button
-                onClick={() => switchRole('L3 Planner')}
-                style={{
-                  background: 'rgba(56, 189, 248, 0.15)',
-                  border: '1px solid rgba(56, 189, 248, 0.35)',
-                  color: '#38BDF8',
-                  borderRadius: '5px',
-                  padding: '4px 10px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px'
-                }}
-              >
-                <span>Switch to Planner View (L3)</span>
-                <ArrowRight size={12} />
-              </button>
+              <div style={{
+                background: 'rgba(212, 20, 20, 0.1)',
+                border: '1px solid rgba(212, 20, 20, 0.25)',
+                borderRadius: '5px',
+                padding: '5px 10px',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                color: '#E19B8B',
+                textAlign: 'center'
+              }}>
+                DPR dispatches route to Planner automatically
+              </div>
             </div>
           </div>
         </div>
@@ -496,14 +486,17 @@ export const SupervisorWorkspace: React.FC = () => {
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => switchRole('L3 Planner')}
-                    className="btn btn-secondary"
-                    style={{ padding: '6px 12px', fontSize: '11.5px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                  >
-                    <span>View in Planner</span>
-                    <ArrowRight size={12} />
-                  </button>
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    color: 'var(--text-muted)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    Planner notified
+                    <ArrowRight size={11} />
+                  </span>
                 </div>
               </div>
             ))}

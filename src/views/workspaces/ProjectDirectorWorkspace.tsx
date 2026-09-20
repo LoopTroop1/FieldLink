@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export const ProjectDirectorWorkspace: React.FC = () => {
-  const { currentUser, switchRole, activities, memoryItems, delayPatterns } = useApp();
+  const { currentUser, activities, memoryItems, delayPatterns } = useApp();
   const [activeTab, setActiveTab] = useState<'memory' | 'macro-kpis' | 'analytics'>('memory');
 
   return (
@@ -81,27 +81,18 @@ export const ProjectDirectorWorkspace: React.FC = () => {
             </div>
 
             <div style={{ paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button
-                onClick={() => switchRole('L2 Project Manager')}
-                style={{
-                  background: 'rgba(139, 92, 246, 0.15)',
-                  border: '1px solid rgba(139, 92, 246, 0.35)',
-                  color: '#C4B5FD',
-                  borderRadius: '5px',
-                  padding: '4px 10px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px'
-                }}
-              >
-                <ArrowLeft size={12} />
-                <span>Switch to Project Controls Manager (L2)</span>
-              </button>
+              <div style={{
+                background: 'rgba(49, 10, 105, 0.15)',
+                border: '1px solid rgba(49, 10, 105, 0.35)',
+                borderRadius: '5px',
+                padding: '5px 10px',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                color: '#C4B5FD',
+                textAlign: 'center'
+              }}>
+                Executive governance -- all tiers report through pipeline
+              </div>
             </div>
           </div>
         </div>

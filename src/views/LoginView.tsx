@@ -74,85 +74,85 @@ export const LoginView: React.FC = () => {
   }> = {
     'L5 Supervisor': {
       levelCode: 'L5',
-      icon: <HardHat size={20} color="#10B981" />,
-      color: '#10B981',
-      bgGlow: 'rgba(16, 185, 129, 0.12)',
-      badge: 'Level 5 — Piping & Field Execution Lead',
+      icon: <HardHat size={20} color="#D41414" />,
+      color: '#D41414',
+      bgGlow: 'rgba(212, 20, 20, 0.12)',
+      badge: 'Level 5 -- Piping & Field Execution Lead',
       responsibilities: 'On-site voice logging, WhatsApp Time Agent, daily progress report (DPR) capture, shift handovers',
-      landingScreen: 'Time Agent & Data Ingestion Hub'
+      landingScreen: 'Supervisor Field Console'
     },
     'L4 Discipline Engineer': {
       levelCode: 'L4',
-      icon: <Wrench size={20} color="#F59E0B" />,
-      color: '#F59E0B',
-      bgGlow: 'rgba(245, 158, 11, 0.12)',
-      badge: 'Level 4 — Field Discipline Engineer',
+      icon: <Wrench size={20} color="#E19B8B" />,
+      color: '#E19B8B',
+      bgGlow: 'rgba(225, 155, 139, 0.12)',
+      badge: 'Level 4 -- Field Discipline Engineer',
       responsibilities: 'Extraction workspace verification, drawing/P&ID linking, quantity & UOM technical validation',
-      landingScreen: 'Extraction Workspace & Quality Hub'
+      landingScreen: 'Discipline Engineering Console'
     },
     'L3 Planner': {
       levelCode: 'L3',
-      icon: <Briefcase size={20} color="#0EA5E9" />,
-      color: '#0EA5E9',
-      bgGlow: 'rgba(14, 165, 233, 0.12)',
-      badge: 'Level 3 — Lead Planning Engineer',
+      icon: <Briefcase size={20} color="#6C3AED" />,
+      color: '#6C3AED',
+      bgGlow: 'rgba(108, 58, 237, 0.12)',
+      badge: 'Level 3 -- Lead Planning Engineer',
       responsibilities: '6-signal schedule linking, out-of-sequence safety gating, 1:N splitting, activity mapping approval',
-      landingScreen: 'Schedule Linker & Planner Review Queue'
+      landingScreen: 'Lead Planner Console'
     },
     'L2 Project Manager': {
       levelCode: 'L2',
       icon: <BarChart3 size={20} color="#8B5CF6" />,
       color: '#8B5CF6',
       bgGlow: 'rgba(139, 92, 246, 0.12)',
-      badge: 'Level 2 — Project Controls Manager',
+      badge: 'Level 2 -- Project Controls Manager',
       responsibilities: 'Real-time S-curves, What-If delay ripple simulation, contractor claims, Oracle P6 sync authorization',
-      landingScreen: 'Operations Overview & What-If Analytics'
+      landingScreen: 'Project Controls Console'
     },
     'L1 Project Director': {
       levelCode: 'L1',
-      icon: <Crown size={20} color="#EC4899" />,
-      color: '#EC4899',
-      bgGlow: 'rgba(236, 72, 153, 0.12)',
-      badge: 'Level 1 — Executive Project Director',
+      icon: <Crown size={20} color="#310A69" />,
+      color: '#310A69',
+      bgGlow: 'rgba(49, 10, 105, 0.15)',
+      badge: 'Level 1 -- Executive Project Director',
       responsibilities: 'Executive portfolio health, macro milestone governance (L1/L2), institutional memory benchmarks',
-      landingScreen: 'Executive Portfolio Cockpit & Project Memory'
+      landingScreen: 'Executive Portfolio Cockpit'
     },
     // Backward-compatible aliases
     'Supervisor': {
       levelCode: 'L5',
-      icon: <HardHat size={20} color="#10B981" />,
-      color: '#10B981',
-      bgGlow: 'rgba(16, 185, 129, 0.12)',
-      badge: 'Level 5 — Piping & Field Execution Lead',
+      icon: <HardHat size={20} color="#D41414" />,
+      color: '#D41414',
+      bgGlow: 'rgba(212, 20, 20, 0.12)',
+      badge: 'Level 5 -- Piping & Field Execution Lead',
       responsibilities: 'On-site voice logging, WhatsApp Time Agent, daily progress report (DPR) capture',
-      landingScreen: 'Time Agent Conversational UI'
+      landingScreen: 'Supervisor Field Console'
     },
     'Discipline Engineer': {
       levelCode: 'L4',
-      icon: <Wrench size={20} color="#F59E0B" />,
-      color: '#F59E0B',
-      bgGlow: 'rgba(245, 158, 11, 0.12)',
-      badge: 'Level 4 — Field Discipline Engineer',
+      icon: <Wrench size={20} color="#E19B8B" />,
+      color: '#E19B8B',
+      bgGlow: 'rgba(225, 155, 139, 0.12)',
+      badge: 'Level 4 -- Field Discipline Engineer',
       responsibilities: 'Extraction workspace verification, phrase highlighting, quantity & UOM refinement',
-      landingScreen: 'Extraction Workspace & Linker'
+      landingScreen: 'Discipline Engineering Console'
     },
     'Planner': {
       levelCode: 'L3',
-      icon: <Briefcase size={20} color="#0EA5E9" />,
-      color: '#0EA5E9',
-      bgGlow: 'rgba(14, 165, 233, 0.12)',
-      badge: 'Level 3 — Lead Planning Engineer',
+      icon: <Briefcase size={20} color="#6C3AED" />,
+      color: '#6C3AED',
+      bgGlow: 'rgba(108, 58, 237, 0.12)',
+      badge: 'Level 3 -- Lead Planning Engineer',
       responsibilities: 'Schedule mutation authority, fast-track gating, predecessor override, mock PMIS sync',
-      landingScreen: 'Planner Review Queue & Gantt'
+      landingScreen: 'Lead Planner Console'
     },
     'Project Manager': {
       levelCode: 'L2',
       icon: <BarChart3 size={20} color="#8B5CF6" />,
       color: '#8B5CF6',
       bgGlow: 'rgba(139, 92, 246, 0.12)',
-      badge: 'Level 2 — Project Controls Manager',
+      badge: 'Level 2 -- Project Controls Manager',
       responsibilities: 'Executive KPI tracking, cumulative S-curves, delay risk analysis, audit surveillance',
-      landingScreen: 'Operations Overview & Analytics'
+      landingScreen: 'Project Controls Console'
     }
   };
 
@@ -161,8 +161,8 @@ export const LoginView: React.FC = () => {
       minHeight: '100vh',
       width: '100vw',
       background: theme === 'dark' 
-        ? 'radial-gradient(ellipse at 50% 15%, #0F172A 0%, #080C16 100%)' 
-        : 'radial-gradient(ellipse at 50% 15%, #FFFFFF 0%, #F1F5F9 100%)',
+        ? 'radial-gradient(ellipse at 50% 15%, #12111D 0%, #0A0A10 100%)' 
+        : 'radial-gradient(ellipse at 50% 15%, #FFFFFF 0%, #F7F5FA 100%)',
       color: 'var(--text-primary)',
       display: 'flex',
       flexDirection: 'column',

@@ -236,13 +236,11 @@ export const RoleCoordinationBar: React.FC = () => {
                 return (
                   <div
                     key={tier.code}
-                    onClick={() => switchRole(tier.role)}
                     style={{
                       background: isCurrent ? tier.bg : 'var(--bg-base)',
                       border: `1.5px solid ${isCurrent ? tier.color : 'var(--border-subtle)'}`,
                       borderRadius: '8px',
                       padding: '10px 12px',
-                      cursor: 'pointer',
                       position: 'relative',
                       transition: 'all 0.2s ease',
                       boxShadow: isCurrent ? `0 0 15px ${tier.color}30` : 'none'

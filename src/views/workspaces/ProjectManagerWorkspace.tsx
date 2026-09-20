@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export const ProjectManagerWorkspace: React.FC = () => {
-  const { currentUser, switchRole, activities, addRoleHandoff, syncWithPMIS } = useApp();
+  const { currentUser, activities, addRoleHandoff, syncWithPMIS } = useApp();
   const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'pmis-sync' | 'audit'>('overview');
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
@@ -105,48 +105,19 @@ export const ProjectManagerWorkspace: React.FC = () => {
               Supervises Planning Layer: <strong>Rajiv Sen (L3 Lead Planner)</strong>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button
-                onClick={() => switchRole('L3 Planner')}
-                style={{
-                  background: 'rgba(56, 189, 248, 0.12)',
-                  border: '1px solid rgba(56, 189, 248, 0.35)',
-                  color: '#38BDF8',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <ArrowLeft size={11} />
-                <span>Planner View</span>
-              </button>
-
-              <button
-                onClick={() => switchRole('L1 Project Director')}
-                style={{
-                  background: 'rgba(236, 72, 153, 0.12)',
-                  border: '1px solid rgba(236, 72, 153, 0.35)',
-                  color: '#EC4899',
-                  borderRadius: '5px',
-                  padding: '4px 6px',
-                  fontSize: '10.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px'
-                }}
-              >
-                <span>Director View (L1)</span>
-                <ArrowRight size={11} />
-              </button>
+            <div style={{ paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <div style={{
+                background: 'rgba(139, 92, 246, 0.1)',
+                border: '1px solid rgba(139, 92, 246, 0.25)',
+                borderRadius: '5px',
+                padding: '5px 10px',
+                fontSize: '10.5px',
+                fontWeight: 600,
+                color: '#A78BFA',
+                textAlign: 'center'
+              }}>
+                PMIS sync reports upstream to Director Dr. Roy
+              </div>
             </div>
           </div>
         </div>
