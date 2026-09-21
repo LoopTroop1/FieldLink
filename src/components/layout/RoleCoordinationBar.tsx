@@ -26,12 +26,10 @@ import {
 export const RoleCoordinationBar: React.FC = () => {
   const { 
     currentUser, 
-    switchRole, 
     roleHandoffs, 
     addRoleHandoff, 
     isRoleCoordinationOpen, 
-    toggleRoleCoordination,
-    setActiveView
+    toggleRoleCoordination
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<'pipeline' | 'handoffs'>('pipeline');
@@ -303,26 +301,19 @@ export const RoleCoordinationBar: React.FC = () => {
                       color: isCurrent ? tier.color : 'var(--text-muted)'
                     }}>
                       <span>Interface: <strong>{tier.primaryView}</strong></span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          switchRole(tier.role);
-                          setActiveView(tier.viewId);
-                        }}
+                      <span
                         style={{
                           background: isCurrent ? tier.color : 'transparent',
-                          color: isCurrent ? '#0F172A' : 'var(--text-secondary)',
+                          color: isCurrent ? '#0F172A' : 'var(--text-muted)',
                           border: `1px solid ${isCurrent ? tier.color : 'var(--border-subtle)'}`,
                           borderRadius: '3px',
                           padding: '2px 5px',
                           fontSize: '9.5px',
-                          cursor: 'pointer',
                           fontWeight: 700
                         }}
-                        title={`Jump to ${tier.role}'s primary view`}
                       >
-                        {isCurrent ? 'Open View' : 'Switch & Open'}
-                      </button>
+                        {isCurrent ? 'Active' : `L${tier.levelNum}`}
+                      </span>
                     </div>
 
                     {/* Flow arrow connecting tiers (except last) */}
