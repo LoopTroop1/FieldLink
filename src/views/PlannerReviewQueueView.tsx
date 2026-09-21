@@ -274,7 +274,7 @@ export const PlannerReviewQueueView: React.FC = () => {
                       <button
                         onClick={() => {
                           setSelectedEventId(ev.id);
-                          setActiveView('linker');
+                          setActiveView('link');
                         }}
                         className="btn btn-secondary"
                         style={{ padding: '4px 8px', fontSize: '11.5px' }}

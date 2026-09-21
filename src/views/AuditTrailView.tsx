@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export const AuditTrailView: React.FC = () => {
-  const { auditTrail, activities, setTracingEvidenceActivity, maskText } = useApp();
+  const { auditTrail, activities, setTracingEvidenceActivity } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAction, setSelectedAction] = useState<string>('ALL');
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
@@ -253,7 +253,7 @@ export const AuditTrailView: React.FC = () => {
                         {getActionBadge(entry.action)}
                       </td>
                       <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                        {maskText(entry.actor)}
+                        {entry.actor}
                       </td>
                       <td style={{ padding: '12px 16px' }}>
                         <span style={{ fontFamily: 'monospace', color: 'var(--teal-accent)', fontWeight: 600 }}>

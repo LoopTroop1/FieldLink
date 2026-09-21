@@ -4,7 +4,7 @@ import { ProgressEvent, ProgressMethod, Discipline } from '../types';
 import { ScanText, CheckCircle, AlertTriangle, Eye } from 'lucide-react';
 
 export const ExtractionWorkspaceView: React.FC = () => {
-  const { fieldRecords, progressEvents, selectedEventId, setSelectedEventId, updateExtractedEvent, setActiveView, maskText } = useApp();
+  const { fieldRecords, progressEvents, selectedEventId, setSelectedEventId, updateExtractedEvent, setActiveView } = useApp();
 
   const currentEvent = progressEvents.find(e => e.id === selectedEventId) || progressEvents[0];
   const currentRecord = fieldRecords.find(r => r.id === currentEvent?.fieldRecordId) || fieldRecords[0];
@@ -18,7 +18,7 @@ export const ExtractionWorkspaceView: React.FC = () => {
         <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>
           Please ingest a daily report or spreadsheet first.
         </p>
-        <button onClick={() => setActiveView('ingestion')} className="btn btn-primary" style={{ marginTop: '16px' }}>
+        <button onClick={() => setActiveView('capture')} className="btn btn-primary" style={{ padding: '8px 16px', margin: '24px' }}>
           Go to Ingestion Hub
         </button>
       </div>
@@ -101,7 +101,7 @@ export const ExtractionWorkspaceView: React.FC = () => {
           </div>
 
           <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-            File: <strong>{currentRecord.sourceName}</strong> | Submitter: <strong>{maskText(currentRecord.submittedBy)}</strong>
+            File: <strong>{currentRecord.sourceName}</strong> | Submitter: <strong>{currentRecord.submittedBy}</strong>
           </div>
 
           {/* Verbatim text container */}
@@ -292,7 +292,7 @@ export const ExtractionWorkspaceView: React.FC = () => {
             </span>
 
             <button
-              onClick={() => setActiveView('linker')}
+              onClick={() => setActiveView('link')}
               className="btn btn-primary"
             >
               <span>Proceed to Schedule Linker</span>

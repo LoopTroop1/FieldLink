@@ -4,7 +4,7 @@ import { Discipline, SourceType } from '../types';
 import { FileText, Table, Image, Mic, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
 
 export const DataIngestionView: React.FC = () => {
-  const { ingestNewRecord, setActiveView, maskText } = useApp();
+  const { ingestNewRecord, setActiveView } = useApp();
 
   const [sourceType, setSourceType] = useState<SourceType>('report');
   const [sourceName, setSourceName] = useState('Daily_Progress_Report_Piping_12Sep.pdf');
@@ -190,7 +190,7 @@ export const DataIngestionView: React.FC = () => {
               <input
                 type="text"
                 className="input-field"
-                value={maskText(submittedBy)}
+                value={submittedBy}
                 onChange={(e) => setSubmittedBy(e.target.value)}
               />
             </div>
@@ -267,7 +267,7 @@ export const DataIngestionView: React.FC = () => {
               <CheckCircle2 size={16} />
               <span>{successMessage}</span>
               <button
-                onClick={() => setActiveView('extraction')}
+                onClick={() => setActiveView('extract')}
                 style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--teal-accent)', fontWeight: 600, cursor: 'pointer', fontSize: '12px' }}
               >
                 Go to Extraction Workspace

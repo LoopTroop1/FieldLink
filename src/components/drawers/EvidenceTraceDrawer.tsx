@@ -10,7 +10,7 @@ interface EvidenceTraceDrawerProps {
 }
 
 export const EvidenceTraceDrawer: React.FC<EvidenceTraceDrawerProps> = ({ activity, onClose }) => {
-  const { activities, progressEvents, fieldRecords, auditTrail, maskText } = useApp();
+  const { activities, progressEvents, fieldRecords, auditTrail } = useApp();
 
   if (!activity) return null;
 
@@ -121,7 +121,7 @@ export const EvidenceTraceDrawer: React.FC<EvidenceTraceDrawerProps> = ({ activi
                     <div key={key}>
                       <span style={{ color: 'var(--text-muted)' }}>{key}: </span>
                       <strong style={{ color: 'var(--text-secondary)' }}>
-                        {maskText(String(val))}
+                        {String(val)}
                       </strong>
                     </div>
                   ))}

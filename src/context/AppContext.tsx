@@ -8,12 +8,8 @@ import {
   ProjectMemoryItem,
   DelayPattern,
   AppSettings,
-  UserRole,
   AllocationSplitItem,
-  MatchCandidate,
-  AuthUser,
-  DEMO_USERS,
-  RoleHandoffItem
+  MatchCandidate
 } from '../types';
 
 import { StorageService } from '../services/storageService';
@@ -24,93 +20,16 @@ import { MatchingService } from '../services/matchingService';
 import { ConfidenceService } from '../services/confidenceService';
 import { ApprovalService } from '../services/approvalService';
 import { MockP6Adapter } from '../services/mockP6Adapter';
-import { PrivacyService } from '../services/privacyService';
 import { ApiService, DatabaseStats } from '../services/apiService';
 
 export type AppView = 
-  | 'supervisor-workspace'
-  | 'planner-workspace'
-  | 'engineer-workspace'
-  | 'pm-workspace'
-  | 'director-workspace'
-  | 'overview'
-  | 'ingestion'
-  | 'extraction'
-  | 'linker'
+  | 'capture'
+  | 'agent'
+  | 'extract'
+  | 'link'
   | 'review'
-  | 'time-agent'
   | 'schedule'
-  | 'analytics'
-  | 'memory'
-  | 'audit'
-  | 'settings';
-
-const ROLE_INITIAL_VIEW_MAP: Record<UserRole, AppView> = {
-  'L5 Supervisor': 'supervisor-workspace',
-  'L4 Discipline Engineer': 'engineer-workspace',
-  'L3 Planner': 'planner-workspace',
-  'L2 Project Manager': 'pm-workspace',
-  'L1 Project Director': 'director-workspace',
-  'Supervisor': 'supervisor-workspace',
-  'Discipline Engineer': 'engineer-workspace',
-  'Planner': 'planner-workspace',
-  'Project Manager': 'pm-workspace'
-};
-
-const INITIAL_ROLE_HANDOFFS: RoleHandoffItem[] = [
-  {
-    id: 'hnd-01',
-    timestamp: '12 Sep 2026, 08:45',
-    fromRole: 'L5 Supervisor',
-    fromName: 'Ramesh Sharma',
-    toRole: 'L4 Discipline Engineer',
-    toName: 'Vikram Patel',
-    action: 'Dispatched Field Daily Progress Report',
-    activityCode: 'PIP-L6-024A',
-    activityName: 'Erect Line 24-XX (18 of 24 joints complete)',
-    status: 'dispatched',
-    note: 'Crew completed 18 welds in North Pipe rack; NDT clearance pending for J-19 to J-24.'
-  },
-  {
-    id: 'hnd-02',
-    timestamp: '12 Sep 2026, 11:20',
-    fromRole: 'L4 Discipline Engineer',
-    fromName: 'Vikram Patel',
-    toRole: 'L3 Planner',
-    toName: 'Rajiv Sen',
-    action: 'Endorsed Technical Spans & Unit Conversion',
-    activityCode: 'PIP-L6-024A',
-    activityName: 'Erect Line 24-XX',
-    status: 'endorsed',
-    note: 'Verified drawing P&ID-2401 alignment; confirmed 75% physical progress is technically accurate.'
-  },
-  {
-    id: 'hnd-03',
-    timestamp: '12 Sep 2026, 14:10',
-    fromRole: 'L3 Planner',
-    fromName: 'Rajiv Sen',
-    toRole: 'L2 Project Manager',
-    toName: 'S. Banerjee',
-    action: 'Approved Schedule Linking & Gated Predecessor Override',
-    activityCode: 'PIP-L6-024A',
-    activityName: 'Erect Line 24-XX',
-    status: 'approved',
-    note: '6-signal confidence 94.8%. Out-of-sequence override accepted with site safety waiver.'
-  },
-  {
-    id: 'hnd-04',
-    timestamp: '15 Sep 2026, 16:30',
-    fromRole: 'L2 Project Manager',
-    fromName: 'S. Banerjee',
-    toRole: 'L1 Project Director',
-    toName: 'Dr. Amitabh Roy',
-    action: 'Authorized Enterprise PMIS Synchronization Payload',
-    activityCode: 'PIP-L6-024A',
-    activityName: 'Sync Tx-DEMO-864607',
-    status: 'synced',
-    note: 'Dispatched P6 EPPM update. Forecast milestone variance held at +1.0 day.'
-  }
-];
+  | 'analytics';
 
 interface AppContextType {
   project: Project;
@@ -134,12 +53,6 @@ interface AppContextType {
   tracingEvidenceActivity: ScheduleActivity | null;
   setTracingEvidenceActivity: (act: ScheduleActivity | null) => void;
   
-  // Authentication & Session
-  currentUser: AuthUser;
-  isAuthenticated: boolean;
-  login: (role: UserRole, customUser?: Partial<AuthUser>) => void;
-  logout: () => void;
-
   // Theme
   theme: 'dark' | 'light';
   toggleTheme: () => void;
@@ -156,16 +69,8 @@ interface AppContextType {
   apply1ToNSplit: (event: ProgressEvent, allocations: AllocationSplitItem[], justification: string) => void;
   syncWithPMIS: (activityId: string) => Promise<void>;
   proposeNewActivity: (event: ProgressEvent, description: string, discipline: any, location: string) => void;
-  setRole: (role: UserRole) => void;
-  switchRole: (role: UserRole) => void;
-  roleHandoffs: RoleHandoffItem[];
-  addRoleHandoff: (item: Omit<RoleHandoffItem, 'id' | 'timestamp'>) => void;
-  isRoleCoordinationOpen: boolean;
-  toggleRoleCoordination: () => void;
-  togglePrivacyMode: () => void;
   resetAllData: () => void;
   getCandidatesForEvent: (event: ProgressEvent) => MatchCandidate[];
-  maskText: (text: string) => string;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -179,21 +84,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [memoryItems, setMemoryItems] = useState<ProjectMemoryItem[]>(() => StorageService.loadMemory());
   const [delayPatterns, setDelayPatterns] = useState<DelayPattern[]>(() => StorageService.loadDelays());
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
-
-  // Authentication & Session
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const saved = localStorage.getItem('FIELDLINK_AUTH_STATE');
-    return saved === 'true';
-  });
-
-  const [currentUser, setCurrentUser] = useState<AuthUser>(() => {
-    const savedRole = StorageService.loadSettings().currentRole || 'L3 Planner';
-    return DEMO_USERS[savedRole] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
-  });
-
-  // Role Coordination & Handoffs State
-  const [roleHandoffs, setRoleHandoffs] = useState<RoleHandoffItem[]>(INITIAL_ROLE_HANDOFFS);
-  const [isRoleCoordinationOpen, setIsRoleCoordinationOpen] = useState<boolean>(true);
 
   // Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -210,10 +100,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  const [activeView, setActiveView] = useState<AppView>(() => {
-    const savedRole = StorageService.loadSettings().currentRole || 'L3 Planner';
-    return ROLE_INITIAL_VIEW_MAP[savedRole] || 'planner-workspace';
-  });
+  const [activeView, setActiveView] = useState<AppView>('capture');
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>('rec-dpr-001');
   const [selectedEventId, setSelectedEventId] = useState<string | null>('ev-001');
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>('act-pip-024a');
@@ -290,12 +177,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     StorageService.saveSettings(settings);
   }, [settings]);
 
-  /**
-   * Masks sensitive worker names or contractor references if Privacy Mode is active
-   */
-  const maskText = (text: string): string => {
-    return PrivacyService.maskText(text, settings.privacyMode);
-  };
+
 
   /**
    * Ingests a new raw field record, normalizes, detects duplicates, and extracts structured events
@@ -398,7 +280,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       activity,
       activities,
       justification,
-      maskText(`${settings.currentRole} (Approval Gate)`),
+      `${settings.currentRole} (Approval Gate)`,
       settings.dataDate
     );
 
@@ -461,7 +343,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         allocations,
         activities,
         justification,
-        maskText(`${settings.currentRole} (1:N Split)`)
+        `${settings.currentRole} (1:N Split)`
       );
 
       if (result.success && result.childEvents) {
@@ -495,12 +377,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const act = activities.find(a => a.id === activityId);
     if (!act) return;
 
-    await MockP6Adapter.synchronize(act, activities, maskText(settings.currentRole));
+    await MockP6Adapter.synchronize(act, activities, settings.currentRole);
     setActivities(StorageService.loadActivities());
     setAuditTrail(StorageService.loadAuditTrail());
 
     // Also notify SQLite backend
-    ApiService.syncPMIS(activityId, maskText(settings.currentRole)).catch(() => {});
+    ApiService.syncPMIS(activityId, settings.currentRole).catch(() => {});
     refreshDbStats().catch(() => {});
   };
 
@@ -563,7 +445,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       entityType: 'ScheduleActivity',
       entityId: newActId,
       action: 'PROPOSE_NEW',
-      actor: maskText(`${settings.currentRole}`),
+      actor: settings.currentRole,
       timestamp: new Date().toISOString(),
       beforeValue: null,
       afterValue: { activityCode: newActCode, description, discipline },
@@ -572,62 +454,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       source: event.evidenceUri
     };
     setAuditTrail(prev => [auditEntry, ...prev]);
-  };
-
-  const setRole = (role: UserRole) => {
-    setSettings(prev => ({ ...prev, currentRole: role }));
-    if (DEMO_USERS[role]) {
-      setCurrentUser(prev => ({
-        ...DEMO_USERS[role],
-        name: prev.name && prev.role === role ? prev.name : DEMO_USERS[role].name
-      }));
-    }
-  };
-
-  const switchRole = (role: UserRole) => {
-    const targetUser = DEMO_USERS[role] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
-    setCurrentUser(targetUser);
-    setSettings(prev => ({ ...prev, currentRole: role }));
-    setActiveView(ROLE_INITIAL_VIEW_MAP[role] || 'overview');
-  };
-
-  const toggleRoleCoordination = () => {
-    setIsRoleCoordinationOpen(prev => !prev);
-  };
-
-  const addRoleHandoff = (item: Omit<RoleHandoffItem, 'id' | 'timestamp'>) => {
-    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const fullItem: RoleHandoffItem = {
-      ...item,
-      id: `hnd-${Date.now()}`,
-      timestamp: `Today, ${timeStr}`
-    };
-    setRoleHandoffs(prev => [fullItem, ...prev]);
-  };
-
-  const login = (role: UserRole, customUser?: Partial<AuthUser>) => {
-    const baseUser = DEMO_USERS[role] || DEMO_USERS['L3 Planner'] || DEMO_USERS['Planner'];
-    const userToSet: AuthUser = {
-      ...baseUser,
-      ...customUser,
-      role
-    };
-    setCurrentUser(userToSet);
-    setIsAuthenticated(true);
-    localStorage.setItem('FIELDLINK_AUTH_STATE', 'true');
-    setSettings(prev => ({ ...prev, currentRole: role }));
-
-    // Role-tailored initial views via declarative map
-    setActiveView(ROLE_INITIAL_VIEW_MAP[role] || 'overview');
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.setItem('FIELDLINK_AUTH_STATE', 'false');
-  };
-
-  const togglePrivacyMode = () => {
-    setSettings(prev => ({ ...prev, privacyMode: !prev.privacyMode }));
   };
 
   const resetAllData = () => {
@@ -640,7 +466,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setMemoryItems(StorageService.loadMemory());
     setDelayPatterns(StorageService.loadDelays());
     setSettings(StorageService.loadSettings());
-    setActiveView('overview');
+    setActiveView('capture');
     setSelectedRecordId('rec-dpr-001');
     setSelectedEventId('ev-001');
     setSelectedActivityId('act-pip-024a');
@@ -678,10 +504,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setInspectingP6Activity,
         tracingEvidenceActivity,
         setTracingEvidenceActivity,
-        currentUser,
-        isAuthenticated,
-        login,
-        logout,
         theme,
         toggleTheme,
         dbStats,
@@ -693,16 +515,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         apply1ToNSplit,
         syncWithPMIS,
         proposeNewActivity,
-        setRole,
-        switchRole,
-        roleHandoffs,
-        addRoleHandoff,
-        isRoleCoordinationOpen,
-        toggleRoleCoordination,
-        togglePrivacyMode,
         resetAllData,
-        getCandidatesForEvent,
-        maskText
+        getCandidatesForEvent
       }}
     >
       {children}

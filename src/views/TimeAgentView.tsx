@@ -29,7 +29,7 @@ interface ChatMessage {
 }
 
 export const TimeAgentView: React.FC = () => {
-  const { ingestNewRecord, maskText } = useApp();
+  const { ingestNewRecord } = useApp();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [inputPrompt, setInputPrompt] = useState('');

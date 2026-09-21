@@ -44,7 +44,7 @@ export const ScheduleLinkerView: React.FC = () => {
     return (
       <div className="oil-card" style={{ textAlign: 'center', padding: '40px' }}>
         <h3>No Event Selected for Linking</h3>
-        <button onClick={() => setActiveView('extraction')} className="btn btn-primary" style={{ marginTop: '16px' }}>
+        <button onClick={() => setActiveView('extract')} className="btn btn-primary" style={{ marginTop: '16px' }}>
           Return to Extraction
         </button>
       </div>
