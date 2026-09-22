@@ -29,7 +29,9 @@ export type AppView =
   | 'link'
   | 'review'
   | 'schedule'
-  | 'analytics';
+  | 'audit'
+  | 'analytics'
+  | 'memory';
 
 interface AppContextType {
   project: Project;
@@ -87,20 +89,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('FIELDLINK_THEME') ?? localStorage.getItem('OIL_INDIA_THEME');
+    const saved = localStorage.getItem('FIELD_PULSE_THEME') ?? localStorage.getItem('OIL_INDIA_THEME');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('FIELDLINK_THEME', theme);
+    localStorage.setItem('FIELD_PULSE_THEME', theme);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  const [activeView, setActiveView] = useState<AppView>('capture');
+  const [activeView, setActiveView] = useState<AppView>('dashboard');
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>('rec-dpr-001');
   const [selectedEventId, setSelectedEventId] = useState<string | null>('ev-001');
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>('act-pip-024a');

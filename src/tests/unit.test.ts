@@ -1,6 +1,6 @@
 /**
  * COMPREHENSIVE SERVICE LAYER UNIT TEST SUITE
- * FieldLink Platform — Capital Projects Schedule Linking System
+ * Field Pulse Platform — Capital Projects Schedule Linking System
  * Covers: Happy path, edge cases, error paths, and boundary values across all core services
  */
 
@@ -31,7 +31,7 @@ function assert(condition: boolean, testId: string, description: string) {
 
 export async function runUnitTests() {
   console.log('\n========================================================================');
-  console.log('FIELDLINK PLATFORM — SERVICE LAYER UNIT & BOUNDARY TEST SUITE');
+  console.log('FIELD_PULSE PLATFORM — SERVICE LAYER UNIT & BOUNDARY TEST SUITE');
   console.log('Testing: Confidence, Normalization, Extraction, Approval, Analytics, P6');
   console.log('========================================================================\n');
 

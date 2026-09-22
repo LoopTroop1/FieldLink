@@ -19,14 +19,14 @@ import {
 } from '../data/delayPatterns';
 
 const KEYS = {
-  PROJECT: 'FIELDLINK_PROJECT_META',
-  ACTIVITIES: 'FIELDLINK_SCHEDULE_ACTIVITIES',
-  RECORDS: 'FIELDLINK_FIELD_RECORDS',
-  EVENTS: 'FIELDLINK_PROGRESS_EVENTS',
-  AUDIT: 'FIELDLINK_AUDIT_TRAIL',
-  MEMORY: 'FIELDLINK_PROJECT_MEMORY',
-  DELAYS: 'FIELDLINK_DELAY_PATTERNS',
-  SETTINGS: 'FIELDLINK_APP_SETTINGS'
+  PROJECT: 'FIELD_PULSE_PROJECT_META',
+  ACTIVITIES: 'FIELD_PULSE_SCHEDULE_ACTIVITIES',
+  RECORDS: 'FIELD_PULSE_FIELD_RECORDS',
+  EVENTS: 'FIELD_PULSE_PROGRESS_EVENTS',
+  AUDIT: 'FIELD_PULSE_AUDIT_TRAIL',
+  MEMORY: 'FIELD_PULSE_PROJECT_MEMORY',
+  DELAYS: 'FIELD_PULSE_DELAY_PATTERNS',
+  SETTINGS: 'FIELD_PULSE_APP_SETTINGS'
 };
 
 const memoryStore = new Map<string, string>();
@@ -72,7 +72,7 @@ export class StorageService {
   private static loadWithFallback<T>(key: string, initialData: T): T {
     let raw = storage.getItem(key);
     if (!raw) {
-      const legacyKey = key.replace('FIELDLINK_', 'OIL_INDIA_');
+      const legacyKey = key.replace('FIELD_PULSE_', 'OIL_INDIA_');
       raw = storage.getItem(legacyKey);
     }
     if (!raw) {
@@ -175,7 +175,7 @@ export class StorageService {
   public static resetToBaseline(): void {
     Object.values(KEYS).forEach(k => {
       storage.removeItem(k);
-      storage.removeItem(k.replace('FIELDLINK_', 'OIL_INDIA_'));
+      storage.removeItem(k.replace('FIELD_PULSE_', 'OIL_INDIA_'));
     });
     this.saveProject(INITIAL_PROJECT);
     this.saveActivities(INITIAL_SCHEDULE_ACTIVITIES);

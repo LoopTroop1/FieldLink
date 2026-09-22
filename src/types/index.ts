@@ -61,6 +61,22 @@ export type DuplicateStatus =
   | 'confirmed-duplicate' 
   | 'duplicate-rejected';
 
+export type ViewType = 
+  | 'dashboard'
+  | 'story-problem'
+  | 'story-architecture'
+  | 'story-feasibility'
+  | 'story-impact'
+  | 'capture' 
+  | 'agent' 
+  | 'extract' 
+  | 'link' 
+  | 'review' 
+  | 'schedule' 
+  | 'audit' 
+  | 'analytics' 
+  | 'memory';
+
 export type EvidenceType = 
   | 'text' 
   | 'spreadsheet' 
@@ -291,7 +307,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L5 Supervisor': {
     id: 'user-supervisor',
     name: 'Ramesh Sharma',
-    email: 'ramesh.sharma@fieldlink.io',
+    email: 'ramesh.sharma@fieldpulse.io',
     role: 'L5 Supervisor',
     department: 'Piping & Field Execution',
     employeeId: 'FL-SUP-1109',
@@ -307,7 +323,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L4 Discipline Engineer': {
     id: 'user-engineer',
     name: 'Vikram Patel',
-    email: 'vikram.patel@fieldlink.io',
+    email: 'vikram.patel@fieldpulse.io',
     role: 'L4 Discipline Engineer',
     department: 'Mechanical & Piping Engineering',
     employeeId: 'FL-ENG-3391',
@@ -323,7 +339,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L3 Planner': {
     id: 'user-planner',
     name: 'Rajiv Sen',
-    email: 'rajiv.sen@fieldlink.io',
+    email: 'rajiv.sen@fieldpulse.io',
     role: 'L3 Planner',
     department: 'Planning & Project Controls',
     employeeId: 'FL-PL-0482',
@@ -339,7 +355,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L2 Project Manager': {
     id: 'user-pm',
     name: 'S. Banerjee',
-    email: 's.banerjee@fieldlink.io',
+    email: 's.banerjee@fieldpulse.io',
     role: 'L2 Project Manager',
     department: 'Project Controls & Construction Directorate',
     employeeId: 'FL-PM-0077',
@@ -355,7 +371,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'L1 Project Director': {
     id: 'user-director',
     name: 'Dr. Amitabh Roy',
-    email: 'amitabh.roy@fieldlink.io',
+    email: 'amitabh.roy@fieldpulse.io',
     role: 'L1 Project Director',
     department: 'Executive Project Directorate (EPPM)',
     employeeId: 'FL-DIR-0001',
@@ -372,7 +388,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'Supervisor': {
     id: 'user-supervisor',
     name: 'Ramesh Sharma',
-    email: 'ramesh.sharma@fieldlink.io',
+    email: 'ramesh.sharma@fieldpulse.io',
     role: 'L5 Supervisor',
     department: 'Piping & Field Execution',
     employeeId: 'FL-SUP-1109',
@@ -388,7 +404,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'Discipline Engineer': {
     id: 'user-engineer',
     name: 'Vikram Patel',
-    email: 'vikram.patel@fieldlink.io',
+    email: 'vikram.patel@fieldpulse.io',
     role: 'L4 Discipline Engineer',
     department: 'Mechanical & Piping Engineering',
     employeeId: 'FL-ENG-3391',
@@ -404,7 +420,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'Planner': {
     id: 'user-planner',
     name: 'Rajiv Sen',
-    email: 'rajiv.sen@fieldlink.io',
+    email: 'rajiv.sen@fieldpulse.io',
     role: 'L3 Planner',
     department: 'Planning & Project Controls',
     employeeId: 'FL-PL-0482',
@@ -420,7 +436,7 @@ export const DEMO_USERS: Record<UserRole, AuthUser> = {
   'Project Manager': {
     id: 'user-pm',
     name: 'S. Banerjee',
-    email: 's.banerjee@fieldlink.io',
+    email: 's.banerjee@fieldpulse.io',
     role: 'L2 Project Manager',
     department: 'Project Controls & Construction Directorate',
     employeeId: 'FL-PM-0077',

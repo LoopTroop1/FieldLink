@@ -112,7 +112,7 @@ export const DataIngestionView: React.FC = () => {
         </p>
       </div>
 
-      {/* Preset Chips Bar */}
+      {/* Preset Scenarios Dropdown */}
       <div style={{
         background: 'var(--bg-surface)',
         border: '1px solid var(--border-subtle)',
@@ -125,40 +125,27 @@ export const DataIngestionView: React.FC = () => {
         gap: '10px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', fontWeight: 600 }}>
-          <Sparkles size={15} color="var(--teal-accent)" />
-          <span>Quick Preset Demo Samples:</span>
+          <Sparkles size={15} color="var(--accent-primary)" />
+          <span>Demo Scenarios:</span>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button onClick={() => loadPreset('piping')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <FileText size={13} color="var(--teal-accent)" />
-            <span>Piping DPR (Line 24-XX)</span>
-          </button>
-          <button onClick={() => loadPreset('csv')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <Table size={13} color="#10B981" />
-            <span>CSV Spreadsheet (Piping)</span>
-          </button>
-          <button onClick={() => loadPreset('civil')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <Table size={13} color="#38BDF8" />
-            <span>Civil Pour Log (CSV)</span>
-          </button>
-          <button onClick={() => loadPreset('diary')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <Image size={13} color="#F59E0B" />
-            <span>Scanned Diary (Electrical OCR)</span>
-          </button>
-          <button onClick={() => loadPreset('p6')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <FileText size={13} color="#EC4899" />
-            <span>Primavera P6 Export (XML)</span>
-          </button>
-          <button onClick={() => loadPreset('hse')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <FileText size={13} color="#F87171" />
-            <span>HSE Safety Inspection</span>
-          </button>
-          <button onClick={() => loadPreset('voice')} className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
-            <Mic size={13} color="#A78BFA" />
-            <span>Time Agent Audio (Pump P-204)</span>
-          </button>
-        </div>
+        <select 
+          className="input-field" 
+          style={{ width: '300px', cursor: 'pointer' }}
+          onChange={(e) => {
+            if (e.target.value) loadPreset(e.target.value as any);
+          }}
+          defaultValue=""
+        >
+          <option value="" disabled>Select a demo scenario...</option>
+          <option value="piping">Piping DPR (Line 24-XX)</option>
+          <option value="csv">CSV Spreadsheet (Piping)</option>
+          <option value="civil">Civil Pour Log (CSV)</option>
+          <option value="diary">Scanned Diary (Electrical OCR)</option>
+          <option value="p6">Primavera P6 Export (XML)</option>
+          <option value="hse">HSE Safety Inspection</option>
+          <option value="voice">Supervisor Voice (Pump P-204)</option>
+        </select>
       </div>
 
       {/* Two Column Layout: Ingestion Form & Processing Queue */}

@@ -1,6 +1,6 @@
 /**
  * COMPREHENSIVE ACCEPTANCE TEST SUITE
- * FieldLink Platform — Capital Projects Schedule Linking System
+ * Field Pulse Platform — Capital Projects Schedule Linking System
  * Validates all 25 Acceptance Criteria (AC-ING, AC-EXT, AC-LNK, AC-REV, AC-SCH, AC-AUD, AC-ANA, AC-MEM, AC-TIM, AC-SEC, AC-SYS)
  */
 
@@ -36,7 +36,7 @@ function assert(condition: boolean, testId: string, description: string) {
 
 async function runAcceptanceTests() {
   console.log('\n========================================================================');
-  console.log('FIELDLINK PLATFORM — ACCEPTANCE VERIFICATION SUITE');
+  console.log('FIELD_PULSE PLATFORM — ACCEPTANCE VERIFICATION SUITE');
   console.log('Anchor Project: Baghewala Surface Facilities Expansion (Rajasthan)');
   console.log('Data Date Cutoff: 2026-09-19');
   console.log('========================================================================\n');

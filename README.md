@@ -1,4 +1,4 @@
-# FieldLink — Intelligent Field Progress & Schedule Linking Platform
+# Field Pulse — Intelligent Field Progress & Schedule Linking Platform
 
 [![Node.js](https://img.shields.io/badge/Node.js-v24-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)](https://react.dev/)
@@ -6,7 +6,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![SQLite](https://img.shields.io/badge/Database-Node%2024%20Native%20SQLite-003B57?logo=sqlite&logoColor=white)](https://nodejs.org/api/sqlite.html)
 [![Tests](https://img.shields.io/badge/Tests-63%2F63%20Passing-10B981)](#-automated-verification)
-[![Design](https://img.shields.io/badge/Design%20System-FieldLink%20Industrial-0EA5E9)](#-design-system)
+[![Design](https://img.shields.io/badge/Design%20System-Field Pulse%20Industrial-0EA5E9)](#-design-system)
 
 > **Deployment Anchor:** Baghewala Surface Facilities Expansion, Thar Desert, Rajasthan  
 > **Target Enterprise:** Enterprise Capital Projects (Heavy Infrastructure, Energy, EPC & Utilities)  
@@ -16,7 +16,7 @@
 
 ## 🌟 Platform Highlights
 
-FieldLink is an enterprise-grade intelligent progress capture and schedule-integration platform engineered for heavy oilfield and infrastructure project control. It automates the journey from unstructured daily field reports (DPRs, tabular spreadsheets, supervisor voice transcripts) to verifiable, audit-attributed schedule updates.
+Field Pulse is an enterprise-grade intelligent progress capture and schedule-integration platform engineered for heavy oilfield and infrastructure project control. It automates the journey from unstructured daily field reports (DPRs, tabular spreadsheets, supervisor voice transcripts) to verifiable, audit-attributed schedule updates.
 
 ```
 [ Field Ingestion ]              [ Intelligent Linking Layer ]             [ Enterprise Control ]
@@ -61,7 +61,7 @@ FieldLink is an enterprise-grade intelligent progress capture and schedule-integ
 
 ## 🔬 Multi-Signal Matching Formula
 
-FieldLink calculates candidate activity alignment through a weighted 6-signal linear formula:
+Field Pulse calculates candidate activity alignment through a weighted 6-signal linear formula:
 
 $$\text{Base Match Score} = \sum_{i=1}^{6} w_i \cdot s_i = 94.8\%$$
 
@@ -117,8 +117,8 @@ npm test
 ### Installation & Run
 ```bash
 # 1. Clone the repository
-git clone https://github.com/LoopTroop1/FieldLink.git
-cd FieldLink
+git clone https://github.com/LoopTroop1/Field Pulse.git
+cd Field Pulse
 
 # 2. Install dependencies
 npm install
@@ -150,4 +150,4 @@ The platform includes a dedicated **One-Click Persona Login Gateway** (`/login`)
 
 ## 📄 License
 
-Proprietary enterprise capital project controls platform. Built with FieldLink Architecture. All rights reserved.
+Proprietary enterprise capital project controls platform. Built with Field Pulse Architecture. All rights reserved.

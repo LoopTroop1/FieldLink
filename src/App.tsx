@@ -2,6 +2,7 @@ import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { TopBar } from './components/layout/TopBar';
 import { TopNavigation } from './components/layout/TopNavigation';
+import { GlobalStatusStrip } from './components/layout/GlobalStatusStrip';
 
 import { DataIngestionView } from './views/DataIngestionView';
 import { TimeAgentView } from './views/TimeAgentView';
@@ -10,9 +11,18 @@ import { ScheduleLinkerView } from './views/ScheduleLinkerView';
 import { PlannerReviewQueueView } from './views/PlannerReviewQueueView';
 import { LiveScheduleGanttView } from './views/LiveScheduleGanttView';
 import { AnalyticsView } from './views/AnalyticsView';
+import { AuditTrailView } from './views/AuditTrailView';
+import { ProjectMemoryView } from './views/ProjectMemoryView';
+
+import { DashboardView } from './views/DashboardView';
+import { StoryProblemView } from './views/StoryProblemView';
+import { StoryArchitectureView } from './views/StoryArchitectureView';
+import { StoryFeasibilityView } from './views/StoryFeasibilityView';
+import { StoryImpactView } from './views/StoryImpactView';
 
 import { P6PayloadDrawer } from './components/drawers/P6PayloadDrawer';
 import { EvidenceTraceDrawer } from './components/drawers/EvidenceTraceDrawer';
+import { DemoOverlay } from './components/layout/DemoOverlay';
 
 const AppContent: React.FC = () => {
   const { 
@@ -25,6 +35,8 @@ const AppContent: React.FC = () => {
 
   const renderActiveView = () => {
     switch (activeView) {
+      case 'dashboard':
+        return <DashboardView />;
       case 'capture':
         return <DataIngestionView />;
       case 'agent':
@@ -37,10 +49,22 @@ const AppContent: React.FC = () => {
         return <PlannerReviewQueueView />;
       case 'schedule':
         return <LiveScheduleGanttView />;
+      case 'audit':
+        return <AuditTrailView />;
       case 'analytics':
         return <AnalyticsView />;
+      case 'memory':
+        return <ProjectMemoryView />;
+      case 'story-problem':
+        return <StoryProblemView />;
+      case 'story-architecture':
+        return <StoryArchitectureView />;
+      case 'story-feasibility':
+        return <StoryFeasibilityView />;
+      case 'story-impact':
+        return <StoryImpactView />;
       default:
-        return <DataIngestionView />;
+        return <DashboardView />;
     }
   };
 
@@ -56,6 +80,7 @@ const AppContent: React.FC = () => {
     }}>
       <TopBar />
       <TopNavigation />
+      <GlobalStatusStrip />
 
       <main style={{
         flex: 1,
@@ -79,6 +104,9 @@ const AppContent: React.FC = () => {
         activity={tracingEvidenceActivity}
         onClose={() => setTracingEvidenceActivity(null)}
       />
+
+      {/* Global Presenter Mode Overlay */}
+      <DemoOverlay />
     </div>
   );
 };

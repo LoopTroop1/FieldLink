@@ -278,9 +278,10 @@ export const PlannerReviewQueueView: React.FC = () => {
                         }}
                         className="btn btn-secondary"
                         style={{ padding: '4px 8px', fontSize: '11.5px' }}
-                        title="Open in Schedule Linker"
+                        title="Detailed Exception Review Workspace"
                       >
                         <ExternalLink size={13} />
+                        <span>Detailed Review</span>
                       </button>
                     </div>
                   </td>

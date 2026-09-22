@@ -8,7 +8,10 @@ import {
   Clock, 
   AlertCircle, 
   Sparkles,
-  Play
+  Play,
+  Mic,
+  MicOff,
+  Loader2
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -63,6 +66,71 @@ export const TimeAgentView: React.FC = () => {
       confirmed: true
     }
   ]);
+
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<any>(null);
+
+  useEffect(() => {
+    // Initialize Speech Recognition
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recog = new SpeechRecognition();
+        recog.continuous = false;
+        recog.interimResults = true;
+        recog.lang = 'en-US';
+
+        recog.onstart = () => {
+          setIsListening(true);
+        };
+
+        recog.onresult = (event: any) => {
+          let interimTranscript = '';
+          let finalTranscript = '';
+
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          
+          if (finalTranscript) {
+            setInputPrompt(prev => (prev + ' ' + finalTranscript).trim());
+            // Optionally auto-send: handleSend((prev + ' ' + finalTranscript).trim());
+          } else if (interimTranscript) {
+            setInputPrompt(interimTranscript);
+          }
+        };
+
+        recog.onerror = (event: any) => {
+          console.error('Speech recognition error', event.error);
+          setIsListening(false);
+        };
+
+        recog.onend = () => {
+          setIsListening(false);
+        };
+
+        setRecognition(recog);
+      }
+    }
+  }, []);
+
+  const toggleMicrophone = () => {
+    if (!recognition) {
+      alert("Voice recognition is not supported in this browser. Please use the simulated audio presets.");
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+    } else {
+      setInputPrompt('');
+      recognition.start();
+    }
+  };
 
   // Selectable Transcripts across all 6 disciplines
   const audioPresets = [
@@ -348,16 +416,48 @@ export const TimeAgentView: React.FC = () => {
 
           {/* Input Box */}
           <div style={{ padding: '14px 20px', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '10px' }}>
-            <input
-              type="text"
-              className="input-field"
-              value={inputPrompt}
-              onChange={(e) => setInputPrompt(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Speak or type field update (e.g. 'Piping crew erected Line 24-XX...')"
-              style={{ fontSize: '13px' }}
-            />
-            <button onClick={() => handleSend()} className="btn btn-primary">
+            <button 
+              onClick={toggleMicrophone}
+              className={`btn ${isListening ? 'btn-danger' : 'btn-secondary'}`}
+              style={{ padding: '0 14px', position: 'relative' }}
+              title="Toggle Microphone"
+            >
+              {isListening ? (
+                <>
+                  <MicOff size={16} />
+                  <span style={{ 
+                    position: 'absolute', top: -4, right: -4, 
+                    display: 'flex', height: 10, width: 10 
+                  }}>
+                    <span style={{ animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite', position: 'absolute', display: 'inline-flex', height: '100%', width: '100%', borderRadius: '50%', backgroundColor: 'var(--danger)', opacity: 0.75 }}></span>
+                    <span style={{ position: 'relative', display: 'inline-flex', borderRadius: '50%', height: 10, width: 10, backgroundColor: 'var(--danger)' }}></span>
+                  </span>
+                </>
+              ) : (
+                <Mic size={16} />
+              )}
+            </button>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <input
+                type="text"
+                className="input-field"
+                value={inputPrompt}
+                onChange={(e) => setInputPrompt(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder={isListening ? "Listening... speak now" : "Speak or type field update (e.g. 'Piping crew erected Line 24-XX...')"}
+                style={{ 
+                  fontSize: '13px', 
+                  width: '100%', 
+                  boxSizing: 'border-box',
+                  borderColor: isListening ? 'var(--danger)' : 'var(--border-subtle)',
+                  paddingRight: '40px'
+                }}
+              />
+              {isListening && (
+                <Loader2 size={16} className="spin" style={{ position: 'absolute', right: 12, top: 12, color: 'var(--danger)' }} />
+              )}
+            </div>
+            <button onClick={() => handleSend()} className="btn btn-primary" disabled={isListening}>
               <Send size={15} />
             </button>
           </div>
@@ -366,7 +466,7 @@ export const TimeAgentView: React.FC = () => {
         {/* Right: Audio Transcript Presets */}
         <div className="oil-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Volume2 size={18} color="var(--teal-accent)" />
+            <Mic size={18} color="var(--teal-accent)" />
             <h2 style={{ fontSize: '14px', fontWeight: 700 }}>Voice Audio Presets (Simulated ASR)</h2>
           </div>
 

@@ -60,23 +60,21 @@ export const ProjectMemoryView: React.FC = () => {
   const handleExport = () => {
     const dataset = {
       exportedAt: new Date().toISOString(),
-      platform: "FieldLink Institutional Memory Layer",
+      platform: "Field Pulse Institutional Memory Layer",
       totalMemoryArtifacts: memoryItems.length,
       totalRecurringDelayPatterns: delayPatterns.length,
       memoryItems,
       delayPatterns
     };
 
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataset, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `FieldLink_Institutional_Memory_${new Date().toISOString().slice(0, 10)}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-
-    setExportFeedback("Exported verified execution patterns for future project planning.");
-    setTimeout(() => setExportFeedback(null), 4000);
+    const dataStr = JSON.stringify(dataset, null, 2);
+    navigator.clipboard.writeText(dataStr).then(() => {
+      setExportFeedback("LLM Context copied to clipboard for RAG planning.");
+      setTimeout(() => setExportFeedback(null), 4000);
+    }).catch(() => {
+      setExportFeedback("Failed to copy to clipboard.");
+      setTimeout(() => setExportFeedback(null), 4000);
+    });
   };
 
   return (
@@ -96,9 +94,10 @@ export const ProjectMemoryView: React.FC = () => {
           onClick={handleExport}
           className="btn btn-primary"
           style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 14px', fontSize: '12.5px' }}
+          title="Copy dataset to clipboard for LLM RAG pipelines"
         >
-          <Download size={15} />
-          <span>Export Planning Baseline Dataset</span>
+          <Brain size={15} />
+          <span>Export LLM Context</span>
         </button>
       </div>
 
@@ -231,52 +230,58 @@ export const ProjectMemoryView: React.FC = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '14px' }}>
-            {filteredDelayPatterns.map(pat => (
-              <div 
-                key={pat.id} 
-                className="oil-card" 
-                style={{ 
-                  borderLeft: '4px solid #EF4444', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'space-between' 
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="badge badge-warning" style={{ textTransform: 'uppercase', fontSize: '10.5px' }}>
-                      {pat.category} Category
-                    </span>
-                    <span className="badge badge-info">{pat.discipline}</span>
+            {filteredDelayPatterns.map(pat => {
+              let severityColor = '#10B981'; // success
+              if (pat.averageImpactDays > 1.5) severityColor = '#F59E0B'; // warning
+              if (pat.averageImpactDays > 3) severityColor = '#EF4444'; // danger
+
+              return (
+                <div 
+                  key={pat.id} 
+                  className="oil-card" 
+                  style={{ 
+                    borderLeft: `4px solid ${severityColor}`, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'space-between' 
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <span className="badge badge-warning" style={{ textTransform: 'uppercase', fontSize: '10.5px' }}>
+                        {pat.category} Category
+                      </span>
+                      <span className="badge badge-info">{pat.discipline}</span>
+                    </div>
+
+                    <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                      {pat.cause}
+                    </h3>
+
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                      Observed across <strong>{pat.occurrences} distinct execution events</strong> on site, resulting in an average schedule delay of <strong>{pat.averageImpactDays} days</strong> per incident.
+                    </p>
                   </div>
 
-                  <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                    {pat.cause}
-                  </h3>
-
-                  <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                    Observed across <strong>{pat.occurrences} distinct execution events</strong> on site, resulting in an average schedule delay of <strong>{pat.averageImpactDays} days</strong> per incident.
-                  </p>
+                  <div style={{
+                    marginTop: '12px',
+                    paddingTop: '10px',
+                    borderTop: '1px solid var(--border-subtle)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    fontSize: '11.5px'
+                  }}>
+                    <span style={{ color: 'var(--text-muted)' }}>
+                      Occurrences: <strong style={{ color: severityColor }}>{pat.occurrences}x</strong>
+                    </span>
+                    <span style={{ color: severityColor, fontWeight: 600 }}>
+                      Avg Impact: +{pat.averageImpactDays}d
+                    </span>
+                  </div>
                 </div>
-
-                <div style={{
-                  marginTop: '12px',
-                  paddingTop: '10px',
-                  borderTop: '1px solid var(--border-subtle)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  fontSize: '11.5px'
-                }}>
-                  <span style={{ color: 'var(--text-muted)' }}>
-                    Occurrences: <strong style={{ color: '#EF4444' }}>{pat.occurrences}x</strong>
-                  </span>
-                  <span style={{ color: '#FBBF24', fontWeight: 600 }}>
-                    Avg Impact: +{pat.averageImpactDays}d
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
