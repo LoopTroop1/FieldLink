@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { Activity, Clock, AlertTriangle, CheckCircle, ArrowRight, BarChart2, TrendingUp, Users } from 'lucide-react';
 
 export const DashboardView: React.FC = () => {
-  const { project, progressEvents, fieldRecords, assignedTasks, settings } = useApp();
+  const { project, progressEvents, fieldRecords, settings } = useApp();
 
   const metrics = {
     totalRecords: fieldRecords.length,
@@ -12,7 +12,9 @@ export const DashboardView: React.FC = () => {
     highConfidence: progressEvents.filter(e => e.confidenceScore >= settings.fastTrackThreshold).length
   };
 
-  const activeTasks = assignedTasks.filter(t => t.status !== 'COMPLETED' && t.role === settings.currentRole);
+  const activeTasks = [
+    { id: '1', title: 'Review Piping Progress', description: '3 events require planner review.', priority: 'HIGH', dueTime: 'Today', actionLabel: 'Review Queue' }
+  ];
 
   return (
     <div style={{ padding: '0 16px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>

@@ -20,10 +20,6 @@ const TABS: TabItem[] = [
   { id: 'audit',              label: '07 Audit',           icon: FileText,    step: 7 },
   { id: 'analytics',          label: '08 Analytics',       icon: BarChart2,   step: 8 },
   { id: 'memory',             label: '09 Memory',          icon: Brain,       step: 9 },
-  { id: 'story-problem',      label: 'Why Field Pulse?',   icon: Lightbulb,   step: 10 },
-  { id: 'story-architecture', label: 'Architecture',       icon: Workflow,    step: 11 },
-  { id: 'story-feasibility',  label: 'Feasibility',        icon: Target,      step: 12 },
-  { id: 'story-impact',       label: 'Impact & Benefits',  icon: Award,       step: 13 },
 ];
 
 export const TopNavigation: React.FC = () => {

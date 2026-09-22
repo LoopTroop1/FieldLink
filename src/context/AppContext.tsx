@@ -23,6 +23,7 @@ import { MockP6Adapter } from '../services/mockP6Adapter';
 import { ApiService, DatabaseStats } from '../services/apiService';
 
 export type AppView = 
+  | 'dashboard'
   | 'capture'
   | 'agent'
   | 'extract'
@@ -31,7 +32,11 @@ export type AppView =
   | 'schedule'
   | 'audit'
   | 'analytics'
-  | 'memory';
+  | 'memory'
+  | 'story-problem'
+  | 'story-architecture'
+  | 'story-feasibility'
+  | 'story-impact';
 
 interface AppContextType {
   project: Project;
